@@ -1,20 +1,12 @@
-const express = require("express");
-const PORT = process.env.PORT || 3100;
-const app = express();
+const app = require("./app");
 
-app.use("/", (req, res) => {
-	console.log(req.method + " - " + req.path);
-
-	res.json({
-		status: 200,
-		message: "Welcome to my application!",
-	});
-
-	res.send();
-});
+let PORT = process.env.PORT || 3100;
+if (process.env?.NODE_ENV == "test") {
+	PORT = 3200;
+}
 
 const server = app.listen(PORT, () => {
-	console.log("Server up on port: " + PORT);
+	// console.log("Server up on port: " + PORT);
 });
 
 module.exports = server;
