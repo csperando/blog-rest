@@ -6,7 +6,8 @@
   "scripts": {
     "build": "npx tsc",
     "start": "node dist/app.js",
-    "dev": "netlify dev",
+    "dev": "set NODE_ENV=dev&& ts-node-dev v1/server.ts",
+    "netlify-dev": "netlify dev",
     "test": "set NODE_ENV=test&& jest --watchAll --detectOpenHandles --config=./v1/jest.config.ts"
   },
   "author": "Coleman Sperando",
@@ -19,6 +20,7 @@
     "netlify": "^13.1.4",
     "serverless-http": "^3.2.0",
     "ts-node": "^10.9.1",
+    "ts-node-dev": "^2.0.0",
     "typescript": "^5.0.2"
   },
   "devDependencies": {
