@@ -6,3 +6,4 @@ dist/middleware
 dist/models
 dist/routes
 dist/services
+dist/blog
