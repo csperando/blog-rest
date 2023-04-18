@@ -1,5 +1,4 @@
 import express, { Request, Response } from "express";
-// import { apiResponse } from "../models/apiResponse";
 
 const router = express.Router();
 
