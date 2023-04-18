@@ -11,7 +11,7 @@ router.all("*", (req: Request, res: Response, next: NextFunction) => {
 
 router.get("/", async (req: Request, res: Response) => {
     try {
-        const dirPath = "./blog/";
+        const dirPath = "./dist/blog/";
         const files = await readdir(dirPath);
         let posts: any = [];
 
@@ -33,7 +33,14 @@ router.get("/", async (req: Request, res: Response) => {
 
     } catch (err: any) {
         res.status(500);
-        res.send(err.message);
+        res.json({
+            status: 500,
+            errors: [err],
+            data: {
+                message: err.message,
+            },
+        });
+        res.send();
         
     }
 });

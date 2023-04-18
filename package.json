@@ -8,6 +8,7 @@
     "start": "node dist/app.js",
     "dev": "set NODE_ENV=dev&& ts-node-dev v1/server.ts",
     "netlify-dev": "netlify dev",
+    "netlify-prod": "netlify dev --context production",
     "test": "set NODE_ENV=test&& jest --watchAll --detectOpenHandles --config=./v1/jest.config.ts"
   },
   "author": "Coleman Sperando",
