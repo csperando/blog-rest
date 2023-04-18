@@ -11,7 +11,7 @@ router.all("*", (req: Request, res: Response, next: NextFunction) => {
 
 router.get("/", async (req: Request, res: Response) => {
     try {
-        const dirPath = "./v1/blog/";
+        const dirPath = "./dist/blog/";
         const files = await readdir(dirPath);
         let posts: any = [];
 
@@ -34,16 +34,6 @@ router.get("/", async (req: Request, res: Response) => {
     } catch (err: any) {
         res.status(500);
         res.send(err.message);
-        
-    }
-});
-
-router.get("/:title", async (req: Request, res: Response) => {
-    try {
-        res.status(403);
-        res.send("Not Available");
-
-    } catch (err: any) {
         
     }
 });
