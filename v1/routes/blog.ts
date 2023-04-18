@@ -1,4 +1,5 @@
 import express, { NextFunction, Request, Response } from "express";
+import { existsSync } from "fs";
 import { readdir, readFile } from "fs/promises";
 
 import { apiResponse } from "v1/models/apiResponse";
@@ -11,7 +12,7 @@ router.all("*", (req: Request, res: Response, next: NextFunction) => {
 
 router.get("/", async (req: Request, res: Response) => {
     try {
-        const dirPath = "./dist/blog/";
+        const dirPath = existsSync("./blog/") ? "./blog/" : "./dist/blog/";
         const files = await readdir(dirPath);
         let posts: any = [];
 
@@ -21,7 +22,7 @@ router.get("/", async (req: Request, res: Response) => {
             posts.push(data);
         }
 
-        let blogResponse: apiResponse = {
+        const blogResponse: apiResponse = {
             status: 200,
             errors: [],
             data: posts,
@@ -32,14 +33,16 @@ router.get("/", async (req: Request, res: Response) => {
         res.send();
 
     } catch (err: any) {
-        res.status(500);
-        res.json({
+        const errorResponse: apiResponse = {
             status: 500,
             errors: [err],
             data: {
                 message: err.message,
             },
-        });
+        };
+
+        res.status(errorResponse.status);
+        res.json(errorResponse);
         res.send();
         
     }
