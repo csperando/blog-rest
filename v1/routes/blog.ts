@@ -11,7 +11,7 @@ router.all("*", (req: Request, res: Response, next: NextFunction) => {
 
 router.get("/", async (req: Request, res: Response) => {
     try {
-        const dirPath = "./dist/blog/";
+        const dirPath = "./blog/";
         const files = await readdir(dirPath);
         let posts: any = [];
 
