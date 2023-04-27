@@ -7,13 +7,13 @@ import { renderMarkdown } from "../services/gh";
 
 const router = express.Router();
 
-router.all("*", (req: Request, res: Response, next: NextFunction) => {
-    next();
-});
+// router.all("*", (req: Request, res: Response, next: NextFunction) => {
+//     next();
+// });
 
 router.get("/", async (req: Request, res: Response) => {
     try {
-        const dirPath = existsSync("./blog/") ? "./blog/" : "./dist";
+        const dirPath = existsSync("./blog/") ? "./blog/" : "./dist/blog";
         const files = await readdir(dirPath);
 
         // only return markdown files
