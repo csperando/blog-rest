@@ -11,7 +11,7 @@
     "netlify-prod": "netlify dev --context production",
     "test": "set NODE_ENV=test&& jest --watchAll --detectOpenHandles --config=./v1/jest.config.ts",
     "postbuild-local": "xcopy /E /I /Y v1\\blog dist\\blog\\",
-    "postbuild": "cp -avr v1/blog/ dist/"
+    "postbuild": "cp -RT v1/blog/* dist/blog/"
   },
   "author": "Coleman Sperando",
   "license": "ISC",
