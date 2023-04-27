@@ -10,7 +10,7 @@
     "netlify-dev": "netlify dev",
     "netlify-prod": "netlify dev --context production",
     "test": "set NODE_ENV=test&& jest --watchAll --detectOpenHandles --config=./v1/jest.config.ts",
-    "postbuild": "chmod +x ./dist && cp -vr ./v1/blog/ ./dist/"
+    "postbuild": "chmod +rw ./dist && mkdir ./dist/blog/ && mkdir ./dist/blog/rendered && cp -vr ./v1/blog/ ./dist/"
   },
   "author": "Coleman Sperando",
   "license": "ISC",
