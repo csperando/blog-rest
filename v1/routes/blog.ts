@@ -14,8 +14,6 @@ router.all("*", (req: Request, res: Response, next: NextFunction) => {
 router.get("/", async (req: Request, res: Response) => {
     try {
         const dirPath = existsSync("./blog/") ? "./blog/" : "./dist";
-        console.log(dirPath);
-        
         const files = await readdir(dirPath);
 
         // only return markdown files
