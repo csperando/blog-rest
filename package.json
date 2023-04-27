@@ -4,13 +4,13 @@
   "description": "A rest server for Coleman's blog site",
   "main": "server.js",
   "scripts": {
-    "build": "chmod +x ./dist && cp -vr v1/blog/ dist/ && npx tsc",
+    "build": "npx tsc",
     "start": "node dist/app.js",
     "dev": "set NODE_ENV=dev&& ts-node-dev v1/server.ts",
     "netlify-dev": "netlify dev",
     "netlify-prod": "netlify dev --context production",
     "test": "set NODE_ENV=test&& jest --watchAll --detectOpenHandles --config=./v1/jest.config.ts",
-    "postbuild": "echo 'chmod +x ./dist && cp -vr v1/blog/ dist/'"
+    "postbuild": "chmod +x ./dist && cp -vr ./v1/blog/ ./dist/"
   },
   "author": "Coleman Sperando",
   "license": "ISC",
