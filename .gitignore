@@ -1,8 +1,2 @@
 node_modules/
 .env
-
-dist/**/*.js
-dist/middleware
-dist/models
-dist/routes
-dist/services
