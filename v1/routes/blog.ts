@@ -18,7 +18,8 @@ router.get("/", async (req: Request, res: Response) => {
 
         // only return markdown files
         const markdown = files.filter((f) => {
-            return f.indexOf(".md") != -1;
+            // return f.indexOf(".md") != -1;
+            return true;
         });
 
         const blogResponse: apiResponse = {
