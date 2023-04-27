@@ -18,8 +18,7 @@ router.get("/", async (req: Request, res: Response) => {
 
         // only return markdown files
         const markdown = files.filter((f) => {
-            // return f.indexOf(".md") != -1;
-            return true;
+            return f.indexOf(".md") != -1;
         });
 
         const blogResponse: apiResponse = {
@@ -32,8 +31,6 @@ router.get("/", async (req: Request, res: Response) => {
         res.json(blogResponse);
 
     } catch (err: any) {
-        console.log(err);
-
         const errorResponse: apiResponse = {
             status: 500,
             errors: [err],

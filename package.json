@@ -5,14 +5,18 @@
   "main": "server.js",
   "scripts": {
     "build": "npm run clean && npx tsc && npm run copy-blog",
+    "clean": "rm -rf ./dist",
+    "copy-blog": "cp -vr ./v1/blog/ ./dist/",
+    "netlify-prod": "netlify dev --context production",
+
+    "build-local": "npx tsc && npm run copy-blog-local",
+    "copy-blog-local": "xcopy /E /I /Y .\\v1\\blog\\ .\\dist\\blog\\",
+    "netlify-dev": "netlify dev",
+    
     "start": "node dist/app.js",
     "dev": "set NODE_ENV=dev&& ts-node-dev v1/server.ts",
-    "netlify-dev": "netlify dev",
-    "netlify-prod": "netlify dev --context production",
-    "test": "set NODE_ENV=test&& jest --watchAll --detectOpenHandles --config=./v1/jest.config.ts",
+    "test": "set NODE_ENV=test&& jest --watchAll --detectOpenHandles --config=./v1/jest.config.ts"
 
-    "clean": "rm -rf ./dist",
-    "copy-blog": "cp -vr ./v1/blog/ ./dist/"
   },
   "author": "Coleman Sperando",
   "license": "ISC",
