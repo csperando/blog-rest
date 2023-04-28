@@ -1,7 +1,12 @@
 [build]
     functions="functions"
 
+# Include all files in all functions
+[functions]
+    included_files = ["dist/**"]
+
 [[redirects]]
     to="/.netlify/functions/api/:splat"
     from="/*"
     status=200
+    
