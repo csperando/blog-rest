@@ -1,107 +1,59 @@
-import express, { NextFunction, Request, Response } from "express";
-import { existsSync } from "fs";
-import { readdir, readFile, writeFile } from "fs/promises";
+import { Router, NextFunction, Request, Response } from "express";
 
-import { apiResponse } from "v1/models/apiResponse";
-import { renderMarkdown } from "../services/gh";
+import { apiResponse } from "../models/apiResponse";
+import { BlogPost } from "../models/Blog";
+import { BlogSingleton } from "../services/blogService";
 
-const router = express.Router();
+const router = Router();
 
-// router.all("*", (req: Request, res: Response, next: NextFunction) => {
-//     next();
-// });
+let blogService: BlogSingleton
 
-router.get("/", async (req: Request, res: Response) => {
+router.all("*", async (req: Request, res: Response, next: NextFunction) => {
+    blogService = await BlogSingleton.getInstance();
+    next();
+});
+
+/**
+ * Get all blog posts
+ */
+router.get("/", async (req: Request, res: Response, next: NextFunction) => {
     try {
-        const dirPath = existsSync("./blog/") ? "./blog/" : "./dist/blog";
-        const files = await readdir(dirPath);
-
-        // only return markdown files
-        const markdown = files.filter((f) => {
-            return f.indexOf(".md") != -1;
-        });
+        const posts = await blogService.getAllBlogPosts();
 
         const blogResponse: apiResponse = {
             status: 200,
             errors: [],
-            data: markdown,
+            data: posts,
         }
         
-        res.status(blogResponse.status);
-        res.json(blogResponse);
+        res.status(blogResponse.status).json(blogResponse).send();
 
     } catch (err: any) {
-        const errorResponse: apiResponse = {
-            status: 500,
-            errors: [err],
-            data: {
-                message: err.message,
-            },
-        };
-
-        res.status(errorResponse.status);
-        res.json(errorResponse);
-        
-    } finally {
-        res.send();
+        next(err);
     }
+
 });
 
-router.get("/:blogTitle", async (req: Request, res: Response) => {
+/**
+ * Get blog post by title
+ */
+router.get("/:blogTitle", async (req: Request, res: Response, next: NextFunction) => {
     try {
-        // define relevant path/files
-        const dirPath = existsSync("./blog/") ? "./blog/" : "./dist/blog/";
-        const filePath = dirPath + req.params.blogTitle + ".md";
-        const htmlPath = dirPath + "rendered/" + req.params.blogTitle + ".html";
-        
-        // try to get blog markdown
-        const file = (await readFile(filePath)).toString();
+        const title = req.params.blogTitle;
+        const post = await blogService.getBlogPostByTitle(title);
 
-        // write html file if it does not already exist
-        if (file) {
-            const exists = existsSync(htmlPath);
-            if (!exists) {
-                const html = await renderMarkdown(file);
-                await writeFile(htmlPath, (html as string));
-            }
+        const blogResponse: apiResponse = {
+            status: 200,
+            errors: [],
+            data: post,
         }
         
-        // read blog data and construct responses
-        let blogResponse: apiResponse;
-        if (file) {
-            const html = (await readFile(htmlPath)).toString();
-            blogResponse = {
-                status: 200,
-                errors: [],
-                data: { markdown: file, html: html },
-            }
-        } else {
-            blogResponse = {
-                status: 404,
-                errors: [new Error("Could not find blog post.")],
-                data: { message: "Could not find blog post." },
-            }
-        }
-        
-        res.status(blogResponse.status);
-        res.json(blogResponse);
+        res.status(blogResponse.status).json(blogResponse).send();
 
     } catch (err: any) {
-        const errorResponse: apiResponse = {
-            status: 500,
-            errors: [err],
-            data: {
-                message: err.message,
-            },
-        };
-
-        res.status(errorResponse.status);
-        res.json(errorResponse);
-        
-    } finally {
-        res.send();
-        
-    }
+        next(err);
+    } 
+    
 });
 
 export default router;

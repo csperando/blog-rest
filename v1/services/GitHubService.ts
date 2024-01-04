@@ -14,6 +14,6 @@ export async function renderMarkdown(markdown: string): Promise<string | void> {
         }).catch((err) => {
             console.error(err);
         });
-    
+
     return ghRes;
 }
