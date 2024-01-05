@@ -3,7 +3,7 @@ import { config, setupDatabase } from "./config";
 
 setupDatabase()
 
-const server = app.listen(3000, () => {
+const server = app.listen(config.rest_port, () => {
     console.log("server up on 3000");
 });
 
