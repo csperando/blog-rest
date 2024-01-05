@@ -1,7 +1,6 @@
 import { BaseService } from "./Base.service";
-import axios from "axios";
 import BlogRepository from "../repository/BlogRepository";
-import { BlogPost } from "v1/models/Blog";
+import { iBlogPost } from "v1/models/Blog";
 
 export class BlogSingleton extends BaseService {
     private static instance: BlogSingleton;
@@ -32,10 +31,50 @@ export class BlogSingleton extends BaseService {
         }
     }
 
-    public async getBlogPostByTitle(title: string): Promise<BlogPost | null> {
+    public async getBlogPostByTitle(title: string): Promise<iBlogPost | null> {
         try {
             const post = BlogSingleton.repo.getBlogPostByTitle(title);
             return post;
+
+        } catch(err: any) {
+            throw(err);
+        }
+    }
+
+    public async getBlogPostByID(postID: string): Promise<iBlogPost | null> {
+        try {
+            const post = BlogSingleton.repo.getBlogPostByID(postID);
+            return post;
+
+        } catch(err: any) {
+            throw(err);
+        }
+    }
+
+    public async addNewPost(post: iBlogPost) {
+        try {
+            const newPost = BlogSingleton.repo.addNewPost(post);
+            return newPost;
+
+        } catch(err: any) {
+            throw(err);
+        }
+    }
+
+    public async editPostByID(postID: string, post: iBlogPost) {
+        try {
+            const updatedPost = await BlogSingleton.repo.editPostByID(postID, post);
+            return updatedPost;
+
+        } catch(err: any) {
+            throw(err);
+        }
+    }
+
+    public async deletePostByID(postID: string) {
+        try {
+            const deletedPost = await BlogSingleton.repo.deletePostByID(postID);
+            return deletedPost;
 
         } catch(err: any) {
             throw(err);
