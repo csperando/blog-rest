@@ -6,7 +6,7 @@
   "scripts": {
     "build": "npm run clean && npx tsc && npm run copy-blog",
     "dev": "set NODE_ENV=dev&& ts-node-dev v1/server.ts",
-    "test": "set NODE_ENV=test&& jest --watchAll --detectOpenHandles --config=./v1/jest.config.ts"
+    "test": "set NODE_ENV=test&& jest --watchAll --detectOpenHandles --config=./v1/jest.config.ts --coverage"
   },
   "author": "Coleman Sperando",
   "license": "ISC",
@@ -28,6 +28,9 @@
   },
   "devDependencies": {
     "@types/jest": "^29.5.11",
-    "jest": "^29.7.0"
+    "@types/supertest": "^6.0.2",
+    "jest": "^29.7.0",
+    "supertest": "^6.3.3",
+    "ts-jest": "^29.1.1"
   }
 }

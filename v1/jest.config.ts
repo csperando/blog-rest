@@ -1,7 +1,5 @@
-import type { Config } from 'jest';
-
-const config: Config = {
-    // verbose: true,
+/** @type {import('ts-jest').JestConfigWithTsJest} */
+module.exports = {
+    preset: 'ts-jest',
+    testEnvironment: 'node',
 };
-
-export default config;
