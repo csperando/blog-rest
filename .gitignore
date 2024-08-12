@@ -1,2 +1,9 @@
+# machine specific
+.DS_Store
+
+# general server/config
 node_modules/
 .env
+
+#testing
+coverage/
