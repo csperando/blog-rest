@@ -1,6 +1,6 @@
 import { Router, NextFunction, Request, Response } from "express";
 
-import { apiResponse } from "../models/apiResponse";
+import { iApiResponse } from "../models/apiResponse";
 import { BlogSingleton } from "../services/blogService";
 import { ObjectId } from "mongoose";
 
@@ -20,7 +20,7 @@ router.get("/", async (req: Request, res: Response, next: NextFunction) => {
     try {
         const posts = await blogService.getAllBlogPosts();
 
-        const blogResponse: apiResponse = {
+        const blogResponse: iApiResponse = {
             status: 200,
             errors: [],
             data: posts,
@@ -42,7 +42,7 @@ router.get("/:blogTitle", async (req: Request, res: Response, next: NextFunction
         const title = req.params.blogTitle;
         const post = await blogService.getBlogPostByTitle(title);
 
-        const blogResponse: apiResponse = {
+        const blogResponse: iApiResponse = {
             status: 200,
             errors: [],
             data: post,
@@ -64,7 +64,7 @@ router.get("/:blogTitle", async (req: Request, res: Response, next: NextFunction
         const postID = req.params.postID;
         const post = await blogService.getBlogPostByID(postID);
 
-        const blogResponse: apiResponse = {
+        const blogResponse: iApiResponse = {
             status: 200,
             errors: [],
             data: post,
