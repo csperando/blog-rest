@@ -2,13 +2,15 @@ import { Router, NextFunction, Request, Response } from "express";
 
 import { iApiResponse } from "../models/apiResponse";
 import { BlogSingleton } from "../services/blogService";
-import { ObjectId } from "mongoose";
+
+import auth from "../middleware/auth";
+import { vBlog } from "../middleware/validators/blog";
 
 const router = Router();
 
 let blogService: BlogSingleton
 
-router.all("*", async (req: Request, res: Response, next: NextFunction) => {
+router.all("*", [auth], async (req: Request, res: Response, next: NextFunction) => {
     blogService = await BlogSingleton.getInstance();
     next();
 });
@@ -57,9 +59,9 @@ router.get("/:blogTitle", async (req: Request, res: Response, next: NextFunction
 });
 
 /**
- * Get blog post by title
+ * Get blog post by blog post ID
  */
- router.get("/find/:postID", async (req: Request, res: Response, next: NextFunction) => {
+ router.get("/find/:postID", [vBlog.isValidObjectID], async (req: Request, res: Response, next: NextFunction) => {
     try {
         const postID = req.params.postID;
         const post = await blogService.getBlogPostByID(postID);
