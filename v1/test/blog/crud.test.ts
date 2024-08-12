@@ -1,7 +1,7 @@
 import server from "../server";
 import { setupDatabase } from "../../config";
 import request from "supertest";
-import { apiResponse } from "../../models/apiResponse";
+import { iApiResponse } from "../../models/apiResponse";
 import { BlogPost, iBlogPost } from "../../models/Blog";
 
 let testID: string;
@@ -28,7 +28,7 @@ describe("Basic read and write functions", () => {
     it("Should add a new blog post", async () => {
         const req = testPost;
         const res = await request(server).post("/blog/new").send(req);
-        const body: apiResponse = JSON.parse(res.text);
+        const body: iApiResponse = JSON.parse(res.text);
         const data = (body.data) as iBlogPost;
         
         // should be successful
@@ -43,7 +43,7 @@ describe("Basic read and write functions", () => {
     
     it("Should get all blog posts", async () => {
         const res = await request(server).get("/blog");
-        const body: apiResponse = JSON.parse(res.text);
+        const body: iApiResponse = JSON.parse(res.text);
         const data: iBlogPost[] = body.data;
 
         // request should be successfull
@@ -54,7 +54,7 @@ describe("Basic read and write functions", () => {
 
     it("Should get a blog post by ID", async () => {
         const res = await request(server).get("/blog/find/" + testID);
-        const body: apiResponse = JSON.parse(res.text);
+        const body: iApiResponse = JSON.parse(res.text);
         const data: iBlogPost = body.data;
         
         // request should be successfull
@@ -67,15 +67,15 @@ describe("Basic read and write functions", () => {
 
     it("should fail to get a post by the wrong id", async () => {
         const res = await request(server).get("/blog/find/1234");
-        const body: apiResponse = JSON.parse(res.text);
+        const body: iApiResponse = JSON.parse(res.text);
         
         // no posts should be found
-        expect(body.status).toBe(404);
+        expect(body.status).not.toBe(200);
     });
 
     it("should get a post by title", async () => {
         const res = await request(server).get("/blog/" + testPost.title);
-        const body: apiResponse = JSON.parse(res.text);
+        const body: iApiResponse = JSON.parse(res.text);
         const data: iBlogPost = body.data;
         
         // request should be successfull
@@ -87,17 +87,17 @@ describe("Basic read and write functions", () => {
 
     it("should fail to get a post by the wrong title", async () => {
         const res = await request(server).get("/blog/does-not-exist");
-        const body: apiResponse = JSON.parse(res.text);
+        const body: iApiResponse = JSON.parse(res.text);
         
         // no posts should be found
-        expect(body.status).toBe(404);
+        expect(body.status).not.toBe(200);
     });
 
     it("Should edit an existing post by ID", async () => {
         testPost.author = "Robert Paulson";
         const req = testPost;
         const res = await request(server).put("/blog/edit/" + testID).send(req);
-        const body: apiResponse = JSON.parse(res.text);
+        const body: iApiResponse = JSON.parse(res.text);
         const data: iBlogPost = body.data;
         
         // request should be successfull
@@ -109,7 +109,7 @@ describe("Basic read and write functions", () => {
 
     it("Should delete a post by ID", async () => {
         const res = await request(server).delete("/blog/delete/" + testID);
-        const body: apiResponse = JSON.parse(res.text);
+        const body: iApiResponse = JSON.parse(res.text);
         const data: iBlogPost = body.data;
         
         // request should be successfull

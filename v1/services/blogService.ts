@@ -33,7 +33,12 @@ export class BlogSingleton extends BaseService {
 
     public async getBlogPostByTitle(title: string): Promise<iBlogPost | null> {
         try {
-            const post = BlogSingleton.repo.getBlogPostByTitle(title);
+            const post = await BlogSingleton.repo.getBlogPostByTitle(title);
+            
+            if(!post) {
+                throw(new Error("Could not find blog post with the provided title."));
+            }
+
             return post;
 
         } catch(err: any) {
@@ -43,7 +48,12 @@ export class BlogSingleton extends BaseService {
 
     public async getBlogPostByID(postID: string): Promise<iBlogPost | null> {
         try {
-            const post = BlogSingleton.repo.getBlogPostByID(postID);
+            const post = await BlogSingleton.repo.getBlogPostByID(postID);
+
+            if(!post) {
+                throw(new Error("Could not find blog post with the provided id."));
+            }
+
             return post;
 
         } catch(err: any) {
