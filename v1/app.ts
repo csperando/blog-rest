@@ -1,7 +1,13 @@
 import express, { Request, Response, NextFunction } from "express";
 import cors, { CorsOptions } from "cors";
 import { iApiResponse } from "./models/apiResponse";
+
+import { setupLogs } from "./logging";
+import * as winston from "winston";
+
 const app = express();
+
+setupLogs();
 
 // CORS
 const whitelist: string[] = [];
@@ -21,6 +27,8 @@ router(app);
 
 // final catch for server errors
 app.use((err: Error, req: Request, res: Response, next: NextFunction) => {
+    winston.error(err.message);
+
     const errorRes: iApiResponse = {
         status: 500,
         errors: [],

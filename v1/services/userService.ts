@@ -1,6 +1,7 @@
 import { BaseService } from "./Base.service";
 import UserRepository from "../repository/UserRepository";
 import { iUser } from "v1/models/User";
+import winston from "winston";
 
 export class UserSingleton extends BaseService {
     private static instance: UserSingleton;
@@ -14,7 +15,7 @@ export class UserSingleton extends BaseService {
         UserSingleton.repo = await UserRepository.repo();
 
         if(!UserSingleton.instance) {
-            console.log("New User service instance created.");
+            winston.info("New User service instance created.");
             UserSingleton.instance = new UserSingleton();
         }
 

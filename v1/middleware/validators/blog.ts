@@ -3,6 +3,7 @@ import { iApiResponse } from "v1/models/apiResponse";
 
 import { iBlogPost, BlogPost } from "../../models/Blog";
 import { isValidObjectId } from "mongoose";
+import winston from "winston";
 
 const isValidObjectID = (req: Request, res: Response, next: NextFunction) => {
     try {
@@ -22,6 +23,7 @@ const isValidObjectID = (req: Request, res: Response, next: NextFunction) => {
         }
 
     } catch(err: any) {
+        winston.error(err.message);
         next(err);
     }
 }
@@ -31,6 +33,7 @@ const hasValidHTML = async (req: Request, res: Response, next: NextFunction) => 
         next();
 
     } catch(err: any) {
+        winston.error(err.message);
         next(err);
     }
 }

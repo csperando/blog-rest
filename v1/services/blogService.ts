@@ -1,6 +1,7 @@
 import { BaseService } from "./Base.service";
 import BlogRepository from "../repository/BlogRepository";
 import { iBlogPost } from "v1/models/Blog";
+import winston from "winston";
 
 export class BlogSingleton extends BaseService {
     private static instance: BlogSingleton;
@@ -14,7 +15,7 @@ export class BlogSingleton extends BaseService {
         BlogSingleton.repo = await BlogRepository.repo();
 
         if(!BlogSingleton.instance) {
-            console.log("New Blog service instance created.");
+            winston.info("New Blog service instance created.");
             BlogSingleton.instance = new BlogSingleton();
         }
 
