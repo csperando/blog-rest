@@ -20,8 +20,6 @@ variables:
   # Agent VM image name
   vmImageName: 'ubuntu-latest'
 
-  # env vars
-
 
 stages:
 - stage: Build
