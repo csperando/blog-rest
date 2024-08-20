@@ -13,3 +13,4 @@ dist/
 
 #logging
 logs/
+*.log
