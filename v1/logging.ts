@@ -1,24 +1,10 @@
 
 import * as winston from "winston";
 
-/*
-    const levels = {
-        error: 0,
-        warn: 1,
-        info: 2,
-        http: 3,
-        verbose: 4,
-        debug: 5,
-        silly: 6
-    };
-*/
-
-
-
 export const setupLogs = function () {
 	const myFormat = winston.format.printf(
-		({ level, message, label, timestamp }) => {
-			return `${timestamp} [${label}] ${level}: ${message}`;
+		({ level, message, timestamp }) => {
+			return `${timestamp} [${level}]: ${message}`;
 		}
 	);
 
@@ -27,7 +13,6 @@ export const setupLogs = function () {
 			winston.format.timestamp(),
 			myFormat
 		),
-
 		transports: [
 			new winston.transports.File({
 				filename: "./logs/error.log",
@@ -45,19 +30,21 @@ export const setupLogs = function () {
 		],
 	});
 
-	process.on("warning", (e) => {
-		winston.error(e.stack);
-		console.warn(e.stack);
-	});
-
+	// errors
 	winston.exceptions?.handle(
-		new winston.transports.File({
-			filename: "./logs/exceptions.log",
+		new winston.transports.File({ 
+			filename: "./logs/error.log",
+			level: "error",
 			maxsize: 10000,
             maxFiles: 60,
 			handleExceptions: true,
 		})
 	);
+
+	process.on("warning", (e) => {
+		winston.error(e.stack);
+		console.warn(e.stack);
+	});
 
 	process.on("unhandledRejection", (ex:any) => {
 		console.warn(ex.stack);

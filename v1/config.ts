@@ -1,6 +1,7 @@
 import * as dotenv from "dotenv";
 import assert from "assert";
 import { connect, Mongoose } from "mongoose";
+import winston from "winston";
 
 dotenv.config();
 
@@ -77,10 +78,10 @@ export async function setupDatabase(): Promise<any> {
     try {
         const connectionString = getConnectionString();
         const db: Mongoose = await connect(connectionString);
-        console.log("Connected to database.");
+        winston.info("Connected to database [" + connectionString + "].");
         return db;
 
     } catch(err: any) {
-        console.log(err);
+        winston.error(err.message);
     }
 }
