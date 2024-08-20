@@ -4,7 +4,7 @@
   "description": "A rest server for Coleman's blog site",
   "main": "server.js",
   "scripts": {
-    "build": "set NODE_ENV=prod&& npx tsc",
+    "build": "set NODE_ENV=prod ; npx tsc",
     "dev": "set NODE_ENV=dev&& ts-node-dev v1/server.ts",
     "test": "set NODE_ENV=test&& jest --watchAll --detectOpenHandles --config=./v1/jest.config.ts --coverage"
   },
