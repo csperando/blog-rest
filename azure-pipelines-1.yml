@@ -42,8 +42,8 @@ stages:
         set NODE_ENV=prod
         set rest_port=3000
         set rest_mongo_prefix='mongodb+srv://'
-        set rest_mongo_user=${{ secrets.REST_MONGO_USER }}
-        set rest_mongo_password=${{ secrets.REST_MONGO_PASSWORD }}
+        set rest_mongo_user=${{ variables.REST_MONGO_USER }}
+        set rest_mongo_password=${{ variables.REST_MONGO_PASSWORD }}
         set rest_mongo_host='@cluster0.1lrnz.mongodb.net/'
         set rest_mongo_db='blog'
         set rest_mongo_db_dev='blog_dev'
