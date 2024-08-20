@@ -6,7 +6,8 @@
   "scripts": {
     "build": "npx tsc",
     "dev": "set NODE_ENV=dev&& ts-node-dev v1/server.ts",
-    "test": "set NODE_ENV=test&& jest --watchAll --detectOpenHandles --config=./v1/jest.config.ts --coverage"
+    "test": "set NODE_ENV=test&& jest --watchAll --detectOpenHandles --config=./v1/jest.config.ts --coverage",
+    "start": "node dist/server.js"
   },
   "author": "Coleman Sperando",
   "license": "ISC",
