@@ -97,7 +97,7 @@ router.post("/new", async (req: Request, res: Response, next: NextFunction) => {
         res.status(response.status).json(response).send();
 
     } catch(err: any) {
-
+        next(err);
     }
 });
 
