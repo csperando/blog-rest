@@ -20,6 +20,9 @@ variables:
   # Agent VM image name
   vmImageName: 'ubuntu-latest'
 
+  # env vars
+
+
 stages:
 - stage: Build
   displayName: Build stage
@@ -34,6 +37,19 @@ stages:
       inputs:
         versionSpec: '19.x'
       displayName: 'Install Node.js'
+
+    - script: |
+        set NODE_ENV=prod
+        set rest_port=3000
+        set rest_mongo_prefix='mongodb+srv://'
+        set rest_mongo_user=${{ secrets.REST_MONGO_USER }}
+        set rest_mongo_password=${{ secrets.REST_MONGO_PASSWORD }}
+        set rest_mongo_host='@cluster0.1lrnz.mongodb.net/'
+        set rest_mongo_db='blog'
+        set rest_mongo_db_dev='blog_dev'
+        set rest_mongo_db_test='blog_test'
+        set rest_mongo_params='?retryWrites=true&w=majority'
+      displayName: 'Setup .env vars'
 
     - script: |
         npm install
