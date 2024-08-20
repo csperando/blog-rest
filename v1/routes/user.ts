@@ -36,4 +36,30 @@ router.get("/", async (req: Request, res: Response, next: NextFunction) => {
 
 });
 
+/**
+ * Get a user by their id
+ */
+router.get("/:userID", async (req: Request, res: Response, next: NextFunction) => {
+    try {
+        const userID = req.params.userID;
+        const user = await userService.getUserByID(userID);
+
+        if(!user) {
+            throw(new Error("Could not find user."));
+        }
+
+        const userResponse: iApiResponse = { 
+            status: 200,
+            errors: [],
+            data: user,
+        }
+        
+        res.status(userResponse.status).json(userResponse).send();
+
+    } catch (err: any) {
+        next(err);
+    }
+
+});
+
 export default router;

@@ -10,8 +10,18 @@ const repo = async () => {
         }
     }
 
+    const getUserByID = async (userID: string) => {
+        try {
+            return await User.findById(userID);
+
+        } catch(err: any) {
+            throw(err);
+        }
+    }
+
     return {
         getAllUsers,
+        getUserByID,
     }
 };
 

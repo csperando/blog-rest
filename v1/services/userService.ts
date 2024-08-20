@@ -23,8 +23,18 @@ export class UserSingleton extends BaseService {
 
     public async getAllUsers() {
         try {
-            const posts = await UserSingleton.repo.getAllUsers();
-            return posts;
+            const users = await UserSingleton.repo.getAllUsers();
+            return users;
+
+        } catch(err: any) {
+            throw(err);
+        }
+    }
+
+    public async getUserByID(userID: string) {
+        try {
+            const user = await UserSingleton.repo.getUserByID(userID);
+            return user;
 
         } catch(err: any) {
             throw(err);
