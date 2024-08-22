@@ -1,6 +1,6 @@
 import { BaseService } from "./Base.service";
 import UserRepository from "../repository/UserRepository";
-import { iUser } from "v1/models/User";
+import { iUser } from "../models/User";
 import winston from "winston";
 
 export class UserSingleton extends BaseService {
@@ -35,6 +35,26 @@ export class UserSingleton extends BaseService {
     public async getUserByID(userID: string) {
         try {
             const user = await UserSingleton.repo.getUserByID(userID);
+            return user;
+
+        } catch(err: any) {
+            throw(err);
+        }
+    }
+
+    public async getUserByUsername(username: string) {
+        try {
+            const user = await UserSingleton.repo.getUserByUsername(username);
+            return user;
+
+        } catch(err: any) {
+            throw(err);
+        }
+    }
+    
+    public async insertNewUser(u: iUser) {
+        try {
+            const user = await UserSingleton.repo.insertNewUser(u);
             return user;
 
         } catch(err: any) {

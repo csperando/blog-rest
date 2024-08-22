@@ -19,9 +19,29 @@ const repo = async () => {
         }
     }
 
+    const getUserByUsername = async (username: string) => {
+        try {
+            return await User.find({ username: username });
+
+        } catch(err: any) {
+            throw(err);
+        }
+    }
+
+    const insertNewUser = async (u: iUser) => {
+        try {
+            return await User.create(u);
+
+        } catch(err: any) {
+            throw(err);
+        }
+    }
+
     return {
         getAllUsers,
         getUserByID,
+        getUserByUsername,
+        insertNewUser,
     }
 };
 
