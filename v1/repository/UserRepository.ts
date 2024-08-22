@@ -36,12 +36,34 @@ const repo = async () => {
             throw(err);
         }
     }
+    
+    const editUserByID = async (userID: string, userData: any) => {
+        try {
+            const options = { new: true };
+            return await User.findByIdAndUpdate(userID, userData, options);
+
+        } catch(err: any) {
+            throw(err);
+        }
+    }
+
+    const deleteUserByID = async (userID: string) => {
+        try {
+            // const options = { new: true };
+            return await User.findByIdAndDelete(userID);
+
+        } catch(err: any) {
+            throw(err);
+        }
+    }
 
     return {
         getAllUsers,
         getUserByID,
         getUserByUsername,
         insertNewUser,
+        editUserByID,
+        deleteUserByID,
     }
 };
 

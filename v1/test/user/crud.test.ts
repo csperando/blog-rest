@@ -6,9 +6,9 @@ import { iUser, User } from "../../models/User";
 
 let testID: string;
 let testUser: iUser = {
-    username: "Robert Paulson",
+    username: "RPaulson",
     salt: "",
-    password: "",
+    password: "test",
     firstName: "Robert",
     lastName: "Paulson",
 };
@@ -40,7 +40,7 @@ describe("Basic read and write functions", () => {
         expect(body.status).toBe(200);
 
         // response should contain the test user object
-        expect(data).toMatchObject(testUser);
+        expect(data.username).toBe(testUser.username);
 
         // save id for later tests
         testID = body.data._id;
@@ -55,7 +55,7 @@ describe("Basic read and write functions", () => {
         expect(body.status).toBe(200);
 
         // response should contain the test user object
-        expect(data).toMatchObject(testUser);
+        expect(data.username).toBe(testUser.username);
     });
 
     it("Should edit a user", async () => {

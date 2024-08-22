@@ -100,8 +100,69 @@ router.post("/new", async (req: Request, res: Response, next: NextFunction) => {
 
         // return new user object (filter out pw, etc.)
         // TODO - send auth token with response
-        newUserResponse.data = _.pick(u, ["username", "firstName", "lastName", "email"]);
+        newUserResponse.data = _.pick(u, ["username", "firstName", "lastName", "email", "_id"]);
         res.status(200).json(newUserResponse).send();
+
+    } catch(err) {
+        next(err);
+    }
+});
+
+/**
+ * Edit an existing user by id
+ */
+router.put("/edit/:userID", async (req: Request, res: Response, next: NextFunction) => {
+    try {
+        const r: iApiResponse = { 
+            status: 200,
+            errors: [],
+            data: {},
+        };
+
+        const userID = req.params.userID;
+        let newUserData = req.body;
+        
+        // validate user exists
+        let user = await userService.getUserByID(userID);
+        if(!user) {
+            throw(new Error("Could not find user."));
+        }
+        
+        // filter supplied fields
+        newUserData = _.pick(newUserData, ["firstName", "lastName", "email", "phone"]);
+        user = await userService.editUserByID(userID, newUserData);
+        r.data = user;
+
+        res.status(200).json(r).send();
+
+    } catch(err) {
+        next(err);
+    }
+});
+
+/**
+ * Delete an existing user by id
+ */
+router.delete("/delete/:userID", async (req: Request, res: Response, next: NextFunction) => {
+    try {
+        const r: iApiResponse = { 
+            status: 200,
+            errors: [],
+            data: {},
+        };
+        
+        const userID = req.params.userID;
+
+        // validate user exists
+        let user = await userService.getUserByID(userID);
+        if(!user) {
+            throw(new Error("Could not find user."));
+        }
+
+        const deletedUserData = await userService.deleteUserByID(userID);
+        r.data = _.pick(deletedUserData, ["username", "firstName", "lastName", "email", "phone"]);
+
+        res.status(200).json(r).send();
 
     } catch(err) {
         next(err);

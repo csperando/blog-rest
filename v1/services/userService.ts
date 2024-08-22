@@ -2,6 +2,7 @@ import { BaseService } from "./Base.service";
 import UserRepository from "../repository/UserRepository";
 import { iUser } from "../models/User";
 import winston from "winston";
+import _ from "lodash";
 
 export class UserSingleton extends BaseService {
     private static instance: UserSingleton;
@@ -62,4 +63,21 @@ export class UserSingleton extends BaseService {
         }
     }
 
+    public async editUserByID(userID: string, userData: any) {
+        try {
+            return await UserSingleton.repo.editUserByID(userID, userData);
+
+        } catch(err) {
+            throw(err);
+        }
+    }
+
+    public async deleteUserByID(userID: string) {
+        try {
+            return await UserSingleton.repo.deleteUserByID(userID);
+
+        } catch(err) {
+            throw(err);
+        }
+    }
 }
