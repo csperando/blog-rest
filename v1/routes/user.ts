@@ -68,7 +68,7 @@ router.get("/:userID", async (req: Request, res: Response, next: NextFunction) =
 
 
 /**
- * Insert new user
+ * TODO - move to login Insert new user
  */
 router.post("/new", async (req: Request, res: Response, next: NextFunction) => {
     try {

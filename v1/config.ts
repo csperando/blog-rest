@@ -8,6 +8,7 @@ dotenv.config();
 const {
     rest_port,
     NODE_ENV,
+    jwt_key,
     rest_mongo_prefix,
     rest_mongo_user,
     rest_mongo_password,
@@ -20,6 +21,7 @@ const {
 
 assert(rest_port, "[rest_port] is required.");
 assert(NODE_ENV, "[NODE_ENV] is required.");
+assert(jwt_key, "[jwt_key] is required.");
 assert(rest_mongo_prefix, "[rest_mongo_prefix] is required.");
 assert(rest_mongo_user, "[rest_mongo_user] is required.");
 assert(rest_mongo_password, "[rest_mongo_password] is required.");
@@ -32,6 +34,7 @@ assert(rest_mongo_params, "[rest_mongo_params] is required.");
 export interface iConfig {
     env: string;
     rest_port: number | string;
+    jwt_key: string;
     rest_mongo_prefix: string;
     rest_mongo_user: string;
     rest_mongo_password: string;
@@ -45,6 +48,7 @@ export interface iConfig {
 export const config: iConfig = {
     env: NODE_ENV,
     rest_port: rest_port,
+    jwt_key: jwt_key,
     rest_mongo_prefix: rest_mongo_prefix,
     rest_mongo_user: rest_mongo_user,
     rest_mongo_password: rest_mongo_password,
