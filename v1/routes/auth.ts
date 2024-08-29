@@ -1,5 +1,5 @@
 import { Router, NextFunction, Request, Response } from "express";
-import { genSalt, hash } from "bcrypt";
+import { compare, genSalt, hash } from "bcrypt";
 import * as _ from "lodash";
 
 import { iApiResponse } from "../models/apiResponse";
@@ -8,6 +8,7 @@ import { AuthSingleton } from "../services/AuthService";
 
 import auth from "../middleware/auth";
 import { iUser } from "v1/models/User";
+import { JwtPayload } from "jsonwebtoken";
 // import { vUser } from "../middleware/validators/user";
 
 
@@ -53,12 +54,11 @@ router.post("/signup", async (req: Request, res: Response, next: NextFunction) =
             throw(new Error("Failed to create new user."));
         }
         
-        // generate jwt here
+        // generate jwt and set header
         const jwt = await authService.generateJWT(newUserData.username);
-        // TODO - set header 'x-auth-token'
-
+        res.set("x-auth-token", jwt);
+        
         // return new user object (filter out pw, etc.)
-        // TODO - send auth token with response
         newUserResponse.data = _.pick(u, ["username", "firstName", "lastName", "email", "_id"]);
         res.status(200).json(newUserResponse).send();
 
@@ -67,5 +67,87 @@ router.post("/signup", async (req: Request, res: Response, next: NextFunction) =
     }
 });
 
+/**
+ * TODO - move to login Insert new user
+ */
+router.post("/login", async (req: Request, res: Response, next: NextFunction) => {
+    try {
+        const userData = req.body;
+        const loginResponse: iApiResponse = {
+            status: 200,
+            data: "",
+            errors: []
+        };
+        
+        // validate user exists
+        const found: [iUser] = await userService.getUserByUsername(userData.username);
+        if(!found.length) {
+            loginResponse.status = 400;
+            loginResponse.data = "Username or password is incorrect.";
+            res.status(400).json(loginResponse).send();
+            return;
+        }
+        
+        // compare passwords
+        const valid = await compare(userData.password, found[0].password);
+        if(!valid) {
+            loginResponse.status = 400;
+            loginResponse.data = "Username or password is incorrect.";
+            res.status(400).json(loginResponse).send();
+            return;
+        }
+        
+        // generate jwt and set header
+        const jwt = await authService.generateJWT(userData.username);
+        res.set("x-auth-token", jwt);
+        
+        // return new user object (filter out pw, etc.)
+        loginResponse.data = _.pick(found[0], ["username", "firstName", "lastName", "email", "_id"]);
+        res.status(200).json(loginResponse).send();
+
+    } catch(err) {
+        next(err);
+    }
+});
+
+/**
+ * TODO - move to login Insert new user
+ */
+router.post("/token", async (req: Request, res: Response, next: NextFunction) => {
+    try {
+        const authResponse: iApiResponse = {
+            status: 200,
+            data: "",
+            errors: []
+        };
+
+        const token = req.header("x-auth-token");
+        
+        // validate token
+        const valid = (await authService.validateJWT(token) as JwtPayload);
+        if(!valid) {
+            authResponse.status = 400;
+            authResponse.data = "Invalid token.";
+            res.status(400).json(authResponse).send();
+            return;
+        }
+
+        const username = valid._id;
+        const u = await userService.getUserByUsername(username);
+        if(!u.length) {
+            authResponse.status = 400;
+            authResponse.data = "Invalid token.";
+            res.status(400).json(authResponse).send();
+            return;
+        }
+
+        res.set("x-auth-token", token);
+        authResponse.data = _.pick(u[0], ["username", "firstName", "lastName", "email", "_id"]);
+        res.status(200).json(authResponse).send();
+
+    } catch(err) {
+        next(err);
+    }
+});
 
 export default router;

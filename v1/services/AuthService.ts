@@ -2,7 +2,7 @@ import { BaseService } from "./Base.service";
 // import AuthRepository from "../repository/AuthRepository";
 import winston from "winston";
 
-import jwt from "jsonwebtoken";
+import jwt, { JwtPayload } from "jsonwebtoken";
 
 export class AuthSingleton extends BaseService {
     private static instance: AuthSingleton;
@@ -40,9 +40,9 @@ export class AuthSingleton extends BaseService {
         }
     }
 
-    public async validateJWT(token: any) {
+    public async validateJWT(token: any): Promise<JwtPayload | string> {
         try {
-            return null;
+            return await jwt.verify(token, AuthSingleton.jwt_key);
 
         } catch(err: any) {
             throw(err);
