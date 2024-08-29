@@ -9,6 +9,7 @@ import { AuthSingleton } from "../services/AuthService";
 import auth from "../middleware/auth";
 import { iUser } from "v1/models/User";
 import { JwtPayload } from "jsonwebtoken";
+import { config } from "../config";
 // import { vUser } from "../middleware/validators/user";
 
 
@@ -18,8 +19,8 @@ let userService: UserSingleton
 let authService: AuthSingleton
 
 router.all("*", [auth], async (req: Request, res: Response, next: NextFunction) => {
-    userService = await UserSingleton.getInstance();
-    authService = await AuthSingleton.getInstance();
+    userService = await UserSingleton.getInstance(config);
+    authService = await AuthSingleton.getInstance(config);
     next();
 });
 

@@ -1,7 +1,7 @@
 import express, { Request, Response, NextFunction } from "express";
 import cors, { CorsOptions } from "cors";
 import { iApiResponse } from "./models/apiResponse";
-
+import router from "./routes";
 import { setupLogs } from "./logging";
 import * as winston from "winston";
 
@@ -22,7 +22,6 @@ const setCorsOptions = function (req: Request, callback: any) {
 };
 app.use(cors(setCorsOptions));
 
-import router from "./routes";
 router(app);
 
 // final catch for server errors

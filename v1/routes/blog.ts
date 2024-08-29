@@ -5,13 +5,14 @@ import { BlogSingleton } from "../services/blogService";
 
 import auth from "../middleware/auth";
 import { vBlog } from "../middleware/validators/blog";
+import { config } from "../config";
 
 const router = Router();
 
 let blogService: BlogSingleton
 
 router.all("*", [auth], async (req: Request, res: Response, next: NextFunction) => {
-    blogService = await BlogSingleton.getInstance();
+    blogService = await BlogSingleton.getInstance(config);
     next();
 });
 

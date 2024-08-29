@@ -3,6 +3,7 @@ import UserRepository from "../repository/UserRepository";
 import { iUser } from "../models/User";
 import winston from "winston";
 import _ from "lodash";
+import { iConfig } from "v1/config";
 
 export class UserSingleton extends BaseService {
     private static instance: UserSingleton;
@@ -12,7 +13,8 @@ export class UserSingleton extends BaseService {
         super();
     }
 
-    public static async getInstance(): Promise<UserSingleton> {
+    public static async getInstance(config: iConfig): Promise<UserSingleton> {
+        BaseService.config = config;
         UserSingleton.repo = await UserRepository.repo();
 
         if(!UserSingleton.instance) {

@@ -6,7 +6,8 @@ import { iApiResponse } from "../models/apiResponse";
 import { UserSingleton } from "../services/userService";
 
 import auth from "../middleware/auth";
-import { iUser } from "v1/models/User";
+import { iUser } from "../models/User";
+import { config } from "../config";
 // import { vUser } from "../middleware/validators/user";
 
 
@@ -15,7 +16,7 @@ const router = Router();
 let userService: UserSingleton
 
 router.all("*", [auth], async (req: Request, res: Response, next: NextFunction) => {
-    userService = await UserSingleton.getInstance();
+    userService = await UserSingleton.getInstance(config);
     next();
 });
 

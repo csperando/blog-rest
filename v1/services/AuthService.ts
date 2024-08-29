@@ -3,6 +3,7 @@ import { BaseService } from "./Base.service";
 import winston from "winston";
 
 import jwt, { JwtPayload } from "jsonwebtoken";
+import { iConfig } from "v1/config";
 
 export class AuthSingleton extends BaseService {
     private static instance: AuthSingleton;
@@ -13,7 +14,8 @@ export class AuthSingleton extends BaseService {
         super();
     }
 
-    public static async getInstance(): Promise<AuthSingleton> {
+    public static async getInstance(config: iConfig): Promise<AuthSingleton> {
+        BaseService.config = config;
         // AuthSingleton.repo = await AuthRepository.repo();
 
         if(!AuthSingleton.instance) {

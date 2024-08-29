@@ -1,8 +1,7 @@
-import app from "./app";
-
 import { config, setupDatabase } from "./config";
-
 setupDatabase();
+
+import app from "./app";
 
 const port = config.rest_port || 8080;
 const server = app.listen(port, () => {
