@@ -39,6 +39,7 @@ stages:
     - script: |
         set NODE_ENV=prod
         set rest_port=${{ variables.rest_port }}
+        set jwt_key=${{ variables.jwt_key }}
         set rest_mongo_prefix='mongodb+srv://'
         set rest_mongo_user=${{ variables.REST_MONGO_USER }}
         set rest_mongo_password=${{ variables.REST_MONGO_PASSWORD }}
