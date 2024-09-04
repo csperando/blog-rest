@@ -10,7 +10,9 @@ import authRouter from "./auth";
 export default (server: Express) => {
     server.use(bodyParser.json());
     server.use("/", ping);
-    server.use("/blog", blogRouter);
     server.use("/user", userRouter);
     server.use("/auth", authRouter);
+    
+    server.use(bodyParser.urlencoded({ extended: false }));
+    server.use("/blog", blogRouter);
 }

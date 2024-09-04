@@ -1,4 +1,7 @@
 import { Router, NextFunction, Request, Response } from "express";
+import multer from "multer";
+const storage = multer.memoryStorage();
+const upload = multer({ storage: storage });
 
 import { iApiResponse } from "../models/apiResponse";
 import { BlogSingleton } from "../services/blogService";
@@ -6,6 +9,7 @@ import { BlogSingleton } from "../services/blogService";
 import auth from "../middleware/auth";
 import { vBlog } from "../middleware/validators/blog";
 import { config } from "../config";
+import { iBlogPost } from "v1/models/Blog";
 
 const router = Router();
 
@@ -84,9 +88,24 @@ router.get("/:blogTitle", async (req: Request, res: Response, next: NextFunction
 /**
  * Add new blog post
  */
-router.post("/new", async (req: Request, res: Response, next: NextFunction) => {
+router.post("/new", upload.single("markdown"), async (req: Request, res: Response, next: NextFunction) => {
     try {
-        const n = req.body;
+        const formData = req.body;
+        const markdownFile = req.file;
+        const markdown = markdownFile?.buffer.toString() || "";
+
+        // TODO - get html from github api
+        
+        const n = {
+            author: formData?.author,
+            title: formData?.title,
+            markdown: markdown
+        } as iBlogPost;
+
+        console.log(n);
+
+        throw(new Error("test"));
+
         const newPost = await blogService.addNewPost(n);
 
         const response = {
