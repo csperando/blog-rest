@@ -6,8 +6,8 @@ export interface iBlogPost {
     keywords: string[];
     markdown: string;
     html: string;
-    created: string;
-    updated: string;
+    created?: string;
+    updated?: string;
 }
 
 const blogPostSchema = new Schema<iBlogPost>({
