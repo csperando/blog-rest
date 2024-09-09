@@ -42,9 +42,9 @@ export class AuthSingleton extends BaseService {
         }
     }
 
-    public async validateJWT(token: any): Promise<JwtPayload | string> {
+    public async validateJWT(token: any): Promise<JwtPayload> {
         try {
-            return await jwt.verify(token, AuthSingleton.jwt_key);
+            return (jwt.verify(token, AuthSingleton.jwt_key) as JwtPayload);
 
         } catch(err: any) {
             throw(err);

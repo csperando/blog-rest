@@ -6,10 +6,11 @@ import { iApiResponse } from "../models/apiResponse";
 import { UserSingleton } from "../services/userService";
 import { AuthSingleton } from "../services/AuthService";
 
-import auth from "../middleware/auth";
 import { iUser } from "v1/models/User";
 import { JwtPayload } from "jsonwebtoken";
 import { config } from "../config";
+
+// import auth from "../middleware/auth";
 // import { vUser } from "../middleware/validators/user";
 
 
@@ -18,7 +19,7 @@ const router = Router();
 let userService: UserSingleton
 let authService: AuthSingleton
 
-router.all("*", [auth], async (req: Request, res: Response, next: NextFunction) => {
+router.all("*", [], async (req: Request, res: Response, next: NextFunction) => {
     userService = await UserSingleton.getInstance(config);
     authService = await AuthSingleton.getInstance(config);
     next();

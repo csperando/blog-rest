@@ -15,7 +15,7 @@ const router = Router();
 
 let blogService: BlogSingleton
 
-router.all("*", [auth], async (req: Request, res: Response, next: NextFunction) => {
+router.all("*", [], async (req: Request, res: Response, next: NextFunction) => {
     blogService = await BlogSingleton.getInstance(config);
     next();
 });
@@ -88,7 +88,7 @@ router.get("/:blogTitle", async (req: Request, res: Response, next: NextFunction
 /**
  * Add new blog post
  */
-router.post("/new", upload.single("markdown"), async (req: Request, res: Response, next: NextFunction) => {
+router.post("/new", [auth], upload.single("markdown"), async (req: Request, res: Response, next: NextFunction) => {
     try {
         const formData = req.body;
         const markdownFile = req.file;
@@ -124,7 +124,7 @@ router.post("/new", upload.single("markdown"), async (req: Request, res: Respons
 /**
  * Edit an existing blog post
  */
-router.put("/edit/:postID", async (req: Request, res: Response, next: NextFunction) => {
+router.put("/edit/:postID", [auth], async (req: Request, res: Response, next: NextFunction) => {
     try {
         const postID = req.params.postID;
         const postData = req.body;
@@ -146,7 +146,7 @@ router.put("/edit/:postID", async (req: Request, res: Response, next: NextFuncti
 /**
  * Delete a blog post by id
  */
-router.delete("/delete/:postID", async (req: Request, res: Response, next: NextFunction) => {
+router.delete("/delete/:postID", [auth], async (req: Request, res: Response, next: NextFunction) => {
     try {
         const postID = req.params.postID;
         const deletedPost = await blogService.deletePostByID(postID);

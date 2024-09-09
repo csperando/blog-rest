@@ -8,6 +8,7 @@ import { UserSingleton } from "../services/userService";
 import auth from "../middleware/auth";
 import { iUser } from "../models/User";
 import { config } from "../config";
+
 // import { vUser } from "../middleware/validators/user";
 
 
