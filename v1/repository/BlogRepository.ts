@@ -1,6 +1,17 @@
 import { iBlogPost, BlogPost } from "../models/Blog";
 
-const repo = async () => {
+// define the type of the return object from the repo() method
+export interface iBlogRepo {
+    getAllBlogPosts: () => Promise<any>;
+    getBlogPostByTitle: (title: string) => Promise<any>;
+    getBlogPostByID: (postID: string) => Promise<any>;
+    addNewPost: (postData: iBlogPost) => Promise<any>;
+    editPostByID: (postID: string, postData: iBlogPost) => Promise<any>;
+    deletePostByID: (postID: string) => Promise<any>;
+}
+
+// main repo init function to be called in the service factories
+const repo = async (): Promise<iBlogRepo> => {
     const getAllBlogPosts = async () => {
         try {
             return await BlogPost.find({});

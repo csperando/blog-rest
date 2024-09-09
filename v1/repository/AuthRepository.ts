@@ -1,6 +1,12 @@
-// import { iBlogPost, BlogPost } from "../models/Blog";
+// import { } from "../models/...";
 
-const repo = async () => {
+// define the type of the return object from the repo() method
+export interface iAuthRepo {
+    getUserRoles: () => Promise<any>;
+}
+
+// main repo init function to be called in the service factories
+const repo = async (): Promise<iAuthRepo> => {
     const getUserRoles = async () => {
         try {
             return false;

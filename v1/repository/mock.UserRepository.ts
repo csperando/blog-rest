@@ -1,17 +1,6 @@
 import { iUser, User } from "../models/User";
 
-// define the type of the return object from the repo() method
-export interface iUserRepo {
-    getAllUsers: () => Promise<any>;
-    getUserByID: (userID: string) => Promise<any>;
-    getUserByUsername: (username: string) => Promise<any>;
-    insertNewUser: (userData: iUser) => Promise<any>;
-    editUserByID: (userID: string, userData: any) => Promise<any>;
-    deleteUserByID: (userID: string) => Promise<any>;
-}
-
-// main repo init function to be called in the service factories
-const repo = async (): Promise<iUserRepo> => {
+const repo = async () => {
     const getAllUsers = async () => {
         try {
             return await User.find({});
@@ -39,9 +28,9 @@ const repo = async (): Promise<iUserRepo> => {
         }
     }
 
-    const insertNewUser = async (userData: iUser) => {
+    const insertNewUser = async (u: iUser) => {
         try {
-            return await User.create(userData);
+            return await User.create(u);
 
         } catch(err: any) {
             throw(err);
@@ -79,3 +68,7 @@ const repo = async (): Promise<iUserRepo> => {
 };
 
 export default { repo };
+
+export interface iUserRepo {
+
+}
