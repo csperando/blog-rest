@@ -10,14 +10,22 @@ export interface iBlogPost {
     updated?: string;
 }
 
-const blogPostSchema = new Schema<iBlogPost>({
-    title: { type: String, required: true },
-    author: { type: String, required: true },
-    keywords: [String],
-    markdown: String,
-    html: String,
-    created: String,
-    updated: String,
-});
+const blogPostSchema = new Schema<iBlogPost>(
+    {
+        title: { type: String, required: true },
+        author: { type: String, required: true },
+        keywords: [String],
+        markdown: String,
+        html: String,
+        created: String,
+        updated: String,
+    },
+    {
+        timestamps: {
+            createdAt: "created",
+            updatedAt: "updated"
+        }
+    }
+);
 
 export const BlogPost = model<iBlogPost>("BlogPost", blogPostSchema);

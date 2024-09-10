@@ -42,7 +42,7 @@ router.post("/signup", async (req: Request, res: Response, next: NextFunction) =
         if(found.length) {
             newUserResponse.status = 400;
             newUserResponse.data = "Username already exists";
-            res.status(400).json(newUserResponse).send();
+            res.status(400).json(newUserResponse);
             return;
         }
         
@@ -62,7 +62,7 @@ router.post("/signup", async (req: Request, res: Response, next: NextFunction) =
         
         // return new user object (filter out pw, etc.)
         newUserResponse.data = _.pick(u, ["username", "firstName", "lastName", "email", "_id"]);
-        res.status(200).json(newUserResponse).send();
+        res.status(200).json(newUserResponse);
 
     } catch(err) {
         next(err);
@@ -86,7 +86,7 @@ router.post("/login", async (req: Request, res: Response, next: NextFunction) =>
         if(!found.length) {
             loginResponse.status = 400;
             loginResponse.data = "Username or password is incorrect.";
-            res.status(400).json(loginResponse).send();
+            res.status(400).json(loginResponse);
             return;
         }
         
@@ -95,7 +95,7 @@ router.post("/login", async (req: Request, res: Response, next: NextFunction) =>
         if(!valid) {
             loginResponse.status = 400;
             loginResponse.data = "Username or password is incorrect.";
-            res.status(400).json(loginResponse).send();
+            res.status(400).json(loginResponse);
             return;
         }
         
@@ -105,7 +105,7 @@ router.post("/login", async (req: Request, res: Response, next: NextFunction) =>
         
         // return new user object (filter out pw, etc.)
         loginResponse.data = _.pick(found[0], ["username", "firstName", "lastName", "email", "_id"]);
-        res.status(200).json(loginResponse).send();
+        res.status(200).json(loginResponse);
 
     } catch(err) {
         next(err);
@@ -130,7 +130,7 @@ router.post("/token", async (req: Request, res: Response, next: NextFunction) =>
         if(!valid) {
             authResponse.status = 400;
             authResponse.data = "Invalid token.";
-            res.status(400).json(authResponse).send();
+            res.status(400).json(authResponse);
             return;
         }
 
@@ -139,13 +139,13 @@ router.post("/token", async (req: Request, res: Response, next: NextFunction) =>
         if(!u.length) {
             authResponse.status = 400;
             authResponse.data = "Invalid token.";
-            res.status(400).json(authResponse).send();
+            res.status(400).json(authResponse);
             return;
         }
 
         res.set("x-auth-token", token);
         authResponse.data = _.pick(u[0], ["username", "firstName", "lastName", "email", "_id"]);
-        res.status(200).json(authResponse).send();
+        res.status(200).json(authResponse);
 
     } catch(err) {
         next(err);

@@ -5,11 +5,12 @@ const upload = multer({ storage: storage });
 
 import { iApiResponse } from "../models/apiResponse";
 import { BlogSingleton } from "../services/blogService";
+import { renderHtml } from "../services/GitHubService";
 
 import auth from "../middleware/auth";
 import { vBlog } from "../middleware/validators/blog";
 import { config } from "../config";
-import { iBlogPost } from "v1/models/Blog";
+import { iBlogPost } from "../models/Blog";
 
 const router = Router();
 
@@ -33,7 +34,7 @@ router.get("/", async (req: Request, res: Response, next: NextFunction) => {
             data: posts,
         }
         
-        res.status(blogResponse.status).json(blogResponse).send();
+        res.status(blogResponse.status).json(blogResponse);
 
     } catch (err: any) {
         next(err);
@@ -55,7 +56,7 @@ router.get("/:blogTitle", async (req: Request, res: Response, next: NextFunction
             data: post,
         }
         
-        res.status(blogResponse.status).json(blogResponse).send();
+        res.status(blogResponse.status).json(blogResponse);
 
     } catch (err: any) {
         next(err);
@@ -77,7 +78,7 @@ router.get("/:blogTitle", async (req: Request, res: Response, next: NextFunction
             data: post,
         }
         
-        res.status(blogResponse.status).json(blogResponse).send();
+        res.status(blogResponse.status).json(blogResponse);
 
     } catch (err: any) {
         next(err);
@@ -88,23 +89,21 @@ router.get("/:blogTitle", async (req: Request, res: Response, next: NextFunction
 /**
  * Add new blog post
  */
-router.post("/new", [auth], upload.single("markdown"), async (req: Request, res: Response, next: NextFunction) => {
+//
+router.post("/new", [auth, upload.single("markdown")], async (req: Request, res: Response, next: NextFunction) => {
     try {
         const formData = req.body;
         const markdownFile = req.file;
         const markdown = markdownFile?.buffer.toString() || "";
 
-        // TODO - get html from github api
+        const html = await renderHtml(markdown);
         
         const n = {
             author: formData?.author,
             title: formData?.title,
-            markdown: markdown
+            markdown: markdown,
+            html: html,
         } as iBlogPost;
-
-        console.log(n);
-
-        throw(new Error("test"));
 
         const newPost = await blogService.addNewPost(n);
 
@@ -114,7 +113,7 @@ router.post("/new", [auth], upload.single("markdown"), async (req: Request, res:
             data: newPost,
         };
 
-        res.status(response.status).json(response).send();
+        res.status(response.status).json(response);
 
     } catch(err: any) {
         next(err);
@@ -136,7 +135,7 @@ router.put("/edit/:postID", [auth], async (req: Request, res: Response, next: Ne
             data: updatedPost,
         };
 
-        res.status(response.status).json(response).send();
+        res.status(response.status).json(response);
 
     } catch(err: any) {
         next(err);
@@ -157,7 +156,7 @@ router.delete("/delete/:postID", [auth], async (req: Request, res: Response, nex
             data: deletedPost,
         };
 
-        res.status(response.status).json(response).send();
+        res.status(response.status).json(response);
 
     } catch(err: any) {
         next(err);

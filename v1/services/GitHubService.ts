@@ -1,6 +1,6 @@
 import axios from "axios";
 
-export async function renderMarkdown(markdown: string): Promise<string | void> {
+export async function renderHtml(markdown: string): Promise<string | void> {
     const endpoint = "https://api.github.com/markdown";
     const body = { text: markdown };
 

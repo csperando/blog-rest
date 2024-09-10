@@ -34,7 +34,7 @@ router.get("/", async (req: Request, res: Response, next: NextFunction) => {
             data: posts,
         }
         
-        res.status(userResponse.status).json(userResponse).send();
+        res.status(userResponse.status).json(userResponse);
 
     } catch (err: any) {
         next(err);
@@ -60,7 +60,7 @@ router.get("/:userID", async (req: Request, res: Response, next: NextFunction) =
             data: user,
         }
         
-        res.status(userResponse.status).json(userResponse).send();
+        res.status(userResponse.status).json(userResponse);
 
     } catch (err: any) {
         next(err);
@@ -86,7 +86,7 @@ router.post("/new", async (req: Request, res: Response, next: NextFunction) => {
         if(found.length) {
             newUserResponse.status = 400;
             newUserResponse.data = "Username already exists";
-            res.status(400).json(newUserResponse).send();
+            res.status(400).json(newUserResponse);
             return;
         }
 
@@ -103,7 +103,7 @@ router.post("/new", async (req: Request, res: Response, next: NextFunction) => {
         // return new user object (filter out pw, etc.)
         // TODO - send auth token with response
         newUserResponse.data = _.pick(u, ["username", "firstName", "lastName", "email", "_id"]);
-        res.status(200).json(newUserResponse).send();
+        res.status(200).json(newUserResponse);
 
     } catch(err) {
         next(err);
@@ -135,7 +135,7 @@ router.put("/edit/:userID", async (req: Request, res: Response, next: NextFuncti
         user = await userService.editUserByID(userID, newUserData);
         r.data = user;
 
-        res.status(200).json(r).send();
+        res.status(200).json(r);
 
     } catch(err) {
         next(err);
@@ -164,7 +164,7 @@ router.delete("/delete/:userID", async (req: Request, res: Response, next: NextF
         const deletedUserData = await userService.deleteUserByID(userID);
         r.data = _.pick(deletedUserData, ["username", "firstName", "lastName", "email", "phone"]);
 
-        res.status(200).json(r).send();
+        res.status(200).json(r);
 
     } catch(err) {
         next(err);
