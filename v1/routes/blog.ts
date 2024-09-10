@@ -26,6 +26,7 @@ router.all("*", [], async (req: Request, res: Response, next: NextFunction) => {
  */
 router.get("/", async (req: Request, res: Response, next: NextFunction) => {
     try {
+        // TODO - update repo method to filter resulting columns
         const posts = await blogService.getAllBlogPosts();
 
         const blogResponse: iApiResponse = {
