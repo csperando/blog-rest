@@ -10,12 +10,13 @@ const app = express();
 setupLogs();
 
 // CORS
-const whitelist: string[] = [];
+const whitelist: string[] = ["http://localhost:5173"];
 const setCorsOptions = function (req: Request, callback: any) {
     let options = {} as CorsOptions;
 
-    if (whitelist?.indexOf(req.header("Origin") || 'localhost') !== -1) {
+    if (whitelist?.indexOf(req.header("Origin") || "") !== -1) {
         options.origin = req.header("Origin");
+        options.allowedHeaders = "Content-Type,Authorization,x-auth-token";
     }
 
     callback(null, options);

@@ -62,6 +62,7 @@ router.post("/signup", async (req: Request, res: Response, next: NextFunction) =
         
         // return new user object (filter out pw, etc.)
         newUserResponse.data = _.pick(u, ["username", "firstName", "lastName", "email", "_id"]);
+        newUserResponse.data.token = jwt;
         res.status(200).json(newUserResponse);
 
     } catch(err) {
@@ -105,6 +106,7 @@ router.post("/login", async (req: Request, res: Response, next: NextFunction) =>
         
         // return new user object (filter out pw, etc.)
         loginResponse.data = _.pick(found[0], ["username", "firstName", "lastName", "email", "_id"]);
+        loginResponse.data.token = jwt;
         res.status(200).json(loginResponse);
 
     } catch(err) {
