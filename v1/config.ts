@@ -17,6 +17,8 @@ const {
     rest_mongo_db_dev,
     rest_mongo_db,
     rest_mongo_params,
+    imgur_client_id,
+    imgur_client_secret,
 } = process.env;
 
 assert(rest_port, "[rest_port] is required.");
@@ -30,6 +32,8 @@ assert(rest_mongo_db_test, "[rest_mongo_db_test] is required.");
 assert(rest_mongo_db_dev, "[rest_mongo_db_dev] is required.");
 assert(rest_mongo_db, "[rest_mongo_db] is required.");
 assert(rest_mongo_params, "[rest_mongo_params] is required.");
+assert(imgur_client_id, "[imgur_client_id] is required.");
+assert(imgur_client_secret, "[imgur_client_secret] is required.");
 
 export interface iConfig {
     env: string;
@@ -43,6 +47,8 @@ export interface iConfig {
     rest_mongo_db_dev: string;
     rest_mongo_db: string;
     rest_mongo_params: string;
+    imgur_client_id: string;
+    imgur_client_secret: string;
 };
 
 export const config: iConfig = {
@@ -57,6 +63,8 @@ export const config: iConfig = {
     rest_mongo_db_dev: rest_mongo_db_dev,
     rest_mongo_db: rest_mongo_db,
     rest_mongo_params: rest_mongo_params,
+    imgur_client_id: imgur_client_id,
+    imgur_client_secret: imgur_client_secret,
 };
 
 function getConnectionString() {
