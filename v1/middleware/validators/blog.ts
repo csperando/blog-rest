@@ -1,5 +1,5 @@
 import { Request, Response, NextFunction } from "express";
-import { iApiResponse } from "v1/models/apiResponse";
+import { iApiResponse } from "../../models/apiResponse";
 
 import { iBlogPost, BlogPost } from "../../models/Blog";
 import { isValidObjectId } from "mongoose";

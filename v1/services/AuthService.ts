@@ -3,7 +3,7 @@ import { BaseService } from "./Base.service";
 import winston from "winston";
 
 import jwt, { JwtPayload } from "jsonwebtoken";
-import { iConfig } from "v1/config";
+import { iConfig } from "../config";
 
 export class AuthSingleton extends BaseService {
     private static instance: AuthSingleton;

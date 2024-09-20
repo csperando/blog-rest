@@ -3,7 +3,7 @@ import UserRepository from "../repository/UserRepository";
 import { iUser } from "../models/User";
 import winston from "winston";
 import _ from "lodash";
-import { iConfig } from "v1/config";
+import { iConfig } from "../config";
 
 export class UserSingleton extends BaseService {
     private static instance: UserSingleton;

@@ -6,7 +6,7 @@ import { iApiResponse } from "../models/apiResponse";
 import { UserSingleton } from "../services/userService";
 import { AuthSingleton } from "../services/AuthService";
 
-import { iUser } from "v1/models/User";
+import { iUser } from "../models/User";
 import { JwtPayload } from "jsonwebtoken";
 import { config } from "../config";
 
