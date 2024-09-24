@@ -98,6 +98,8 @@ router.post("/new", [auth, upload.fields([{name: "markdown", maxCount: 1}, {name
         const markdown = markdownFile?.buffer.toString() || "";
 
         const html = await renderHtml(markdown);
+
+        // TODO - add imgur service to upload thumbnail image
         
         const n = {
             author: formData?.author,
