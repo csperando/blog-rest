@@ -91,7 +91,7 @@ router.get("/:blogTitle", async (req: Request, res: Response, next: NextFunction
  * Add new blog post
  */
 //
-router.post("/new", [auth, upload.single("markdown")], async (req: Request, res: Response, next: NextFunction) => {
+router.post("/new", [auth, upload.fields([{name: "markdown", maxCount: 1}, {name: "thumbnail", maxCount: 1}])], async (req: Request, res: Response, next: NextFunction) => {
     try {
         const formData = req.body;
         const markdownFile = req.file;
