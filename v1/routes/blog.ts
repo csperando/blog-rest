@@ -5,7 +5,6 @@ const upload = multer({ storage: storage });
 
 import { iApiResponse } from "../models/apiResponse";
 import { BlogSingleton } from "../services/blogService";
-import { ImgurSingleton } from "../services/ImgurService";
 import { renderHtml } from "../services/GitHubService";
 
 import auth from "../middleware/auth";
@@ -16,11 +15,9 @@ import { iBlogPost } from "../models/Blog";
 const router = Router();
 
 let blogService: BlogSingleton
-let imgurService: ImgurSingleton
 
 router.all("*", [], async (req: Request, res: Response, next: NextFunction) => {
     blogService = await BlogSingleton.getInstance(config);
-    imgurService = await ImgurSingleton.getInstance(config);
     next();
 });
 
@@ -94,7 +91,7 @@ router.get("/:blogTitle", async (req: Request, res: Response, next: NextFunction
  * Add new blog post
  */
 //
-router.post("/new", [auth, upload.fields([{name: "markdown", maxCount: 1}, {name: "thumbnail", maxCount: 1}])], async (req: Request, res: Response, next: NextFunction) => {
+router.post("/new", [auth, upload.fields([{name: "markdown", maxCount: 1}])], async (req: Request, res: Response, next: NextFunction) => {
     try {
         // Get file data from request body using Multer middleware
         const files = req.files as { [fieldname: string]: Express.Multer.File[] };
@@ -104,25 +101,16 @@ router.post("/new", [auth, upload.fields([{name: "markdown", maxCount: 1}, {name
         const markdownFile = files['markdown'] ? files['markdown'][0] : null;
         const markdown = markdownFile?.buffer.toString() || "";
         const html = await renderHtml(markdown);
-        
-        // upload thumbnail image to imgur, save resulting url
-        const thumbnailFile = files['thumbnail'] ? files['thumbnail'][0] : null;
-        const imgurRes = await imgurService.uploadImage(thumbnailFile);
-        let thumbnailLink = "";
-        if(imgurRes) {
-            thumbnailLink = imgurRes.data.link || null;
-        } else {
-            // TODO - append error to response body
-        }
 
         const n = {
             author: formData?.author,
             title: formData?.title,
             description: formData?.description,
             keywords: formData?.keywords,
+            thumbnail: formData?.thumbnail,
+            mime: formData?.mime,
             markdown: markdown,
             html: html,
-            thumbnail: thumbnailLink
         } as iBlogPost;
 
         const newPost = await blogService.addNewPost(n);

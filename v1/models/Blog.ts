@@ -8,6 +8,7 @@ export interface iBlogPost {
     markdown: string;
     html: string;
     thumbnail?: string;
+    mime?: string;
     created?: string;
     updated?: string;
 }
@@ -21,6 +22,7 @@ const blogPostSchema = new Schema<iBlogPost>(
         markdown: String,
         html: String,
         thumbnail: String,
+        mime: String,
         created: String,
         updated: String,
     },
