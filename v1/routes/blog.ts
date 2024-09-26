@@ -171,4 +171,31 @@ router.delete("/delete/:postID", [auth], async (req: Request, res: Response, nex
     }
 });
 
+
+router.post("/markdown", [auth, upload.fields([{name: "markdown", maxCount: 1}])], async (req: Request, res: Response, next: NextFunction) => {
+    try {
+        // Get file data from request body using Multer middleware
+        const files = req.files as { [fieldname: string]: Express.Multer.File[] };
+        
+        // use GitHub api to generate html from markdown file
+        const markdownFile = files['markdown'] ? files['markdown'][0] : null;
+        const markdown = markdownFile?.buffer.toString() || "";
+        const html = await renderHtml(markdown);
+
+        const response = {
+            status: 200,
+            errors: [],
+            data: {
+                html: html,
+                markdown: markdown,
+            },
+        };
+
+        res.status(response.status).json(response);
+
+    } catch(err: any) {
+        next(err);
+    }
+})
+
 export default router;
