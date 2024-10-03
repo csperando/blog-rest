@@ -1,4 +1,5 @@
 import { Router, NextFunction, Request, Response } from "express";
+import winston from "winston";
 import multer from "multer";
 const storage = multer.memoryStorage();
 const upload = multer({ storage: storage });
@@ -38,6 +39,7 @@ router.get("/", async (req: Request, res: Response, next: NextFunction) => {
         res.status(blogResponse.status).json(blogResponse);
 
     } catch (err: any) {
+        winston.error(err.message);
         next(err);
     }
 
@@ -60,6 +62,7 @@ router.get("/find/:postID", [vBlog.isValidObjectID], async (req: Request, res: R
         res.status(blogResponse.status).json(blogResponse);
 
     } catch (err: any) {
+        winston.error(err.message);
         next(err);
     } 
     
@@ -82,6 +85,7 @@ router.get("/:blogTitle", async (req: Request, res: Response, next: NextFunction
         res.status(blogResponse.status).json(blogResponse);
 
     } catch (err: any) {
+        winston.error(err.message);
         next(err);
     } 
     
@@ -124,6 +128,7 @@ router.post("/new", [auth, upload.fields([{name: "markdown", maxCount: 1}])], as
         res.status(response.status).json(response);
 
     } catch(err: any) {
+        winston.error(err.message);
         next(err);
     }
 });
@@ -146,6 +151,7 @@ router.put("/edit/:postID", [auth], async (req: Request, res: Response, next: Ne
         res.status(response.status).json(response);
 
     } catch(err: any) {
+        winston.error(err.message);
         next(err);
     }
 });
@@ -167,6 +173,7 @@ router.delete("/delete/:postID", [auth], async (req: Request, res: Response, nex
         res.status(response.status).json(response);
 
     } catch(err: any) {
+        winston.error(err.message);
         next(err);
     }
 });
@@ -194,6 +201,7 @@ router.post("/markdown", [auth, upload.fields([{name: "markdown", maxCount: 1}])
         res.status(response.status).json(response);
 
     } catch(err: any) {
+        winston.error(err.message);
         next(err);
     }
 })
