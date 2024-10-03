@@ -10,6 +10,7 @@ let testPost: iBlogPost = {
     author: "TS-Jest",
     keywords: [],
     markdown: "",
+    description: "test",
     html: "",
     created: "",
     updated: "",

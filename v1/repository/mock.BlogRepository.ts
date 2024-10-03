@@ -4,6 +4,7 @@ import { iBlogRepo } from "./BlogRepository";
 const testBlogPost: iBlogPost = {
     title: "This is a test",
     author: "Robert Paulson",
+    description: "Sample Blog Post",
     keywords: ["movie reference"],
     markdown: "test",
     html: "<p>test</p>",
