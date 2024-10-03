@@ -45,6 +45,7 @@ export class BlogSingleton extends BaseService {
             return post;
 
         } catch(err: any) {
+            winston.error(err.message);
             throw(err);
         }
     }
@@ -60,6 +61,7 @@ export class BlogSingleton extends BaseService {
             return post;
 
         } catch(err: any) {
+            winston.error(err.message);
             throw(err);
         }
     }
@@ -70,6 +72,7 @@ export class BlogSingleton extends BaseService {
             return newPost;
 
         } catch(err: any) {
+            winston.error(err.message);
             throw(err);
         }
     }
@@ -80,6 +83,7 @@ export class BlogSingleton extends BaseService {
             return updatedPost;
 
         } catch(err: any) {
+            winston.error(err.message);
             throw(err);
         }
     }
@@ -90,6 +94,7 @@ export class BlogSingleton extends BaseService {
             return deletedPost;
 
         } catch(err: any) {
+            winston.error(err.message);
             throw(err);
         }
     }
