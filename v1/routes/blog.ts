@@ -44,12 +44,12 @@ router.get("/", async (req: Request, res: Response, next: NextFunction) => {
 });
 
 /**
- * Get blog post by title
+ * Get blog post by blog post ID
  */
-router.get("/:blogTitle", async (req: Request, res: Response, next: NextFunction) => {
+router.get("/find/:postID", [vBlog.isValidObjectID], async (req: Request, res: Response, next: NextFunction) => {
     try {
-        const title = req.params.blogTitle;
-        const post = await blogService.getBlogPostByTitle(title);
+        const postID = req.params.postID;
+        const post = await blogService.getBlogPostByID(postID);
 
         const blogResponse: iApiResponse = {
             status: 200,
@@ -66,12 +66,12 @@ router.get("/:blogTitle", async (req: Request, res: Response, next: NextFunction
 });
 
 /**
- * Get blog post by blog post ID
+ * Get blog post by title
  */
- router.get("/find/:postID", [vBlog.isValidObjectID], async (req: Request, res: Response, next: NextFunction) => {
+router.get("/:blogTitle", async (req: Request, res: Response, next: NextFunction) => {
     try {
-        const postID = req.params.postID;
-        const post = await blogService.getBlogPostByID(postID);
+        const title = req.params.blogTitle;
+        const post = await blogService.getBlogPostByTitle(title);
 
         const blogResponse: iApiResponse = {
             status: 200,
