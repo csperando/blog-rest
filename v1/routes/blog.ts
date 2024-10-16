@@ -106,6 +106,11 @@ router.post("/new", [auth, upload.fields([{name: "markdown", maxCount: 1}])], as
         const markdown = markdownFile?.buffer.toString() || "";
         const html = await renderHtml(markdown);
 
+        // parse keywords from form data or leave undefined
+        formData.keywords = (formData.keywords) 
+            ? (formData?.keywords as string).trim().split(",").map((el: any) => el.trim())
+            : undefined;
+
         const n = {
             author: formData?.author,
             title: formData?.title,
