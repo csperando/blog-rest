@@ -1,4 +1,4 @@
-import { iBlogPost, BlogPost } from "../models/Blog";
+import { iBlogPost, BlogPost, TopKeywords } from "../models/Blog";
 
 // define the type of the return object from the repo() method
 export interface iBlogRepo {
@@ -8,6 +8,7 @@ export interface iBlogRepo {
     addNewPost: (postData: iBlogPost) => Promise<any>;
     editPostByID: (postID: string, postData: iBlogPost) => Promise<any>;
     deletePostByID: (postID: string) => Promise<any>;
+    getTopKeywords: () => Promise<any>;
 }
 
 // main repo init function to be called in the service factories
@@ -66,6 +67,20 @@ const repo = async (): Promise<iBlogRepo> => {
         }
     }
 
+    const getTopKeywords = async () => {
+        try {
+            const keywords = await TopKeywords.find({})
+                .sort({ "count": -1 })
+                .limit(5)
+                .lean();
+
+            return keywords;
+
+        } catch(err: any) {
+            throw(err);
+        }
+    }
+
     return {
         getAllBlogPosts,
         getBlogPostByTitle,
@@ -73,6 +88,7 @@ const repo = async (): Promise<iBlogRepo> => {
         addNewPost,
         editPostByID,
         deletePostByID,
+        getTopKeywords
     }
 };
 

@@ -2,6 +2,7 @@ import * as dotenv from "dotenv";
 import assert from "assert";
 import { connect, Mongoose } from "mongoose";
 import winston from "winston";
+import { setupViews } from "./models/views";
 
 dotenv.config();
 
@@ -91,6 +92,9 @@ export async function setupDatabase(): Promise<any> {
         const connectionString = getConnectionString();
         const db: Mongoose = await connect(connectionString);
         winston.info("Connected to database [" + connectionString + "].");
+
+        await setupViews(db);
+        
         return db;
 
     } catch(err: any) {

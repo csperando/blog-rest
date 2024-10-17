@@ -99,4 +99,15 @@ export class BlogSingleton extends BaseService {
         }
     }
 
+    public async getTopKeywords() {
+        try {
+            const keywords = await BlogSingleton.repo.getTopKeywords();
+            return keywords;
+            
+        } catch(err: any) {
+            winston.error(err.message);
+            throw(err);
+        }
+    }
+
 }

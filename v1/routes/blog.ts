@@ -46,6 +46,28 @@ router.get("/", async (req: Request, res: Response, next: NextFunction) => {
 });
 
 /**
+ * Get top keywords
+ */
+router.get("/keywords", async (req: Request, res: Response, next: NextFunction) => {
+    try {
+        const keywords = await blogService.getTopKeywords();
+
+        const response: iApiResponse = {
+            status: 200,
+            errors: [],
+            data: keywords,
+        }
+        
+        res.status(response.status).json(response);
+
+    } catch (err: any) {
+        winston.error(err.message);
+        next(err);
+    }
+
+});
+
+/**
  * Get blog post by blog post ID
  */
 router.get("/find/:postID", [vBlog.isValidObjectID], async (req: Request, res: Response, next: NextFunction) => {

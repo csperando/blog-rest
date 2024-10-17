@@ -35,3 +35,8 @@ const blogPostSchema = new Schema<iBlogPost>(
 );
 
 export const BlogPost = model<iBlogPost>("BlogPost", blogPostSchema);
+
+
+// View models
+
+export const TopKeywords = model<iBlogPost>("TopKeywords", blogPostSchema);
