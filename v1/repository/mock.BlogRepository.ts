@@ -82,6 +82,18 @@ const mockRepo = async (): Promise<iBlogRepo> => {
         }
     }
 
+    const getTopKeywords = async () => {
+        try {
+            return [
+                { _id: "DevOps", count: 5 },
+                { _id: "GriGri", count: 3 }
+            ];
+            
+        } catch(err: any) {
+            throw(err);
+        }
+    }
+
     return {
         getAllBlogPosts,
         getBlogPostByTitle,
@@ -89,6 +101,7 @@ const mockRepo = async (): Promise<iBlogRepo> => {
         addNewPost,
         editPostByID,
         deletePostByID,
+        getTopKeywords,
     }
 }
 
