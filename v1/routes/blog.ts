@@ -91,6 +91,29 @@ router.get("/find/:postID", [vBlog.isValidObjectID], async (req: Request, res: R
 });
 
 /**
+ * Get blog post by blog post ID
+ */
+router.get("/find", async (req: Request, res: Response, next: NextFunction) => {
+    try {
+        const keyword = (req.query.keyword as string);
+        const posts = await blogService.getBlogPostsByKeyword(keyword);
+
+        const blogResponse: iApiResponse = {
+            status: 200,
+            errors: [],
+            data: posts,
+        }
+        
+        res.status(blogResponse.status).json(blogResponse);
+
+    } catch (err: any) {
+        winston.error(err.message);
+        next(err);
+    } 
+    
+});
+
+/**
  * Get blog post by title
  */
 router.get("/:blogTitle", async (req: Request, res: Response, next: NextFunction) => {

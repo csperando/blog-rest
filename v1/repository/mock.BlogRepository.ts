@@ -33,6 +33,17 @@ const mockRepo = async (): Promise<iBlogRepo> => {
             throw(err);
         }
     }
+    
+    const getBlogPostsByKeyword = async (keyword: string) => {
+        try {
+            const b = testBlogPost;
+            b.keywords = [keyword];
+            return [b];
+
+        } catch(err: any) {
+            throw(err);
+        }
+    }
 
     // TODO
     const getBlogPostByID = async (postID: string) => {
@@ -102,6 +113,7 @@ const mockRepo = async (): Promise<iBlogRepo> => {
         editPostByID,
         deletePostByID,
         getTopKeywords,
+        getBlogPostsByKeyword,
     }
 }
 

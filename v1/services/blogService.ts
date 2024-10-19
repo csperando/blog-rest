@@ -65,6 +65,22 @@ export class BlogSingleton extends BaseService {
             throw(err);
         }
     }
+    
+    public async getBlogPostsByKeyword(keyword: string): Promise<iBlogPost[] | null> {
+        try {
+            const posts = await BlogSingleton.repo.getBlogPostsByKeyword(keyword);
+
+            if(!posts) {
+                throw(new Error("Could not find blog posts with the provided keyword."));
+            }
+
+            return posts;
+
+        } catch(err: any) {
+            winston.error(err.message);
+            throw(err);
+        }
+    }
 
     public async addNewPost(post: iBlogPost) {
         try {

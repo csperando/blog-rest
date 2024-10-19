@@ -9,6 +9,7 @@ export interface iBlogRepo {
     editPostByID: (postID: string, postData: iBlogPost) => Promise<any>;
     deletePostByID: (postID: string) => Promise<any>;
     getTopKeywords: () => Promise<any>;
+    getBlogPostsByKeyword: (keyword: string) => Promise<any>;
 }
 
 // main repo init function to be called in the service factories
@@ -25,6 +26,17 @@ const repo = async (): Promise<iBlogRepo> => {
     const getBlogPostByTitle = async (title: string) => {
         try {
             return await BlogPost.findOne({ title: title });
+
+        } catch(err: any) {
+            throw(err);
+        }
+    }
+    
+    const getBlogPostsByKeyword = async (keyword: string) => {
+        try {
+            const re = new RegExp(keyword, "i");
+            const posts = await BlogPost.find({ keywords: { $regex: re } });
+            return posts;
 
         } catch(err: any) {
             throw(err);
@@ -88,7 +100,8 @@ const repo = async (): Promise<iBlogRepo> => {
         addNewPost,
         editPostByID,
         deletePostByID,
-        getTopKeywords
+        getTopKeywords,
+        getBlogPostsByKeyword,
     }
 };
 
