@@ -4,6 +4,7 @@ import * as _ from "lodash";
 
 import { iApiResponse } from "../models/apiResponse";
 import { UserSingleton } from "../services/userService";
+import { BlogSingleton } from "../services/blogService";
 
 import auth from "../middleware/auth";
 import { iUser } from "../models/User";
@@ -15,9 +16,11 @@ import { config } from "../config";
 const router = Router();
 
 let userService: UserSingleton
+let blogService: BlogSingleton;
 
-router.all("*", [auth], async (req: Request, res: Response, next: NextFunction) => {
+router.all("*", async (req: Request, res: Response, next: NextFunction) => {
     userService = await UserSingleton.getInstance(config);
+    blogService = await BlogSingleton.getInstance(config);
     next();
 });
 
@@ -45,6 +48,36 @@ router.get("/", async (req: Request, res: Response, next: NextFunction) => {
 /**
  * Get a user by their id
  */
+router.get("/posts/:userID", async (req: Request, res: Response, next: NextFunction) => {
+    try {
+        const userID = req.params.userID;
+        const user = await userService.getUserByID(userID);
+
+        if(!user) {
+            throw(new Error("Could not find user."));
+        }
+
+        const author = user.firstName + " " + user.lastName;
+        const posts = await blogService.getBlogPostsByAuthor(author);
+
+        const userPostsResponse: iApiResponse = { 
+            status: 200,
+            errors: [],
+            data: posts,
+        }
+        
+        res.status(userPostsResponse.status).json(userPostsResponse);
+
+    } catch (err: any) {
+        next(err);
+    }
+
+});
+
+
+/**
+ * Get a user by their id
+ */
 router.get("/:userID", async (req: Request, res: Response, next: NextFunction) => {
     try {
         const userID = req.params.userID;
@@ -57,7 +90,7 @@ router.get("/:userID", async (req: Request, res: Response, next: NextFunction) =
         const userResponse: iApiResponse = { 
             status: 200,
             errors: [],
-            data: user,
+            data: _.pick(user, ["email", "firstName", "lastName", "username", "phone", "_id"]),
         }
         
         res.status(userResponse.status).json(userResponse);
@@ -72,7 +105,7 @@ router.get("/:userID", async (req: Request, res: Response, next: NextFunction) =
 /**
  * TODO - move to login Insert new user
  */
-router.post("/new", async (req: Request, res: Response, next: NextFunction) => {
+router.post("/new", [auth], async (req: Request, res: Response, next: NextFunction) => {
     try {
         const newUserData = req.body;
         const newUserResponse: iApiResponse = {
@@ -113,7 +146,7 @@ router.post("/new", async (req: Request, res: Response, next: NextFunction) => {
 /**
  * Edit an existing user by id
  */
-router.put("/edit/:userID", async (req: Request, res: Response, next: NextFunction) => {
+router.put("/edit/:userID", [auth], async (req: Request, res: Response, next: NextFunction) => {
     try {
         const r: iApiResponse = { 
             status: 200,
@@ -145,7 +178,7 @@ router.put("/edit/:userID", async (req: Request, res: Response, next: NextFuncti
 /**
  * Delete an existing user by id
  */
-router.delete("/delete/:userID", async (req: Request, res: Response, next: NextFunction) => {
+router.delete("/delete/:userID", [auth], async (req: Request, res: Response, next: NextFunction) => {
     try {
         const r: iApiResponse = { 
             status: 200,

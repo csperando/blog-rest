@@ -4,6 +4,7 @@ import { iBlogPost, BlogPost, TopKeywords } from "../models/Blog";
 export interface iBlogRepo {
     getAllBlogPosts: () => Promise<any>;
     getBlogPostByTitle: (title: string) => Promise<any>;
+    getBlogPostsByAuthor: (author: string) => Promise<any>;
     getBlogPostByID: (postID: string) => Promise<any>;
     addNewPost: (postData: iBlogPost) => Promise<any>;
     editPostByID: (postID: string, postData: iBlogPost) => Promise<any>;
@@ -26,6 +27,15 @@ const repo = async (): Promise<iBlogRepo> => {
     const getBlogPostByTitle = async (title: string) => {
         try {
             return await BlogPost.findOne({ title: title });
+
+        } catch(err: any) {
+            throw(err);
+        }
+    }
+
+    const getBlogPostsByAuthor = async (author: string) => {
+        try {
+            return await BlogPost.find({ author: author });
 
         } catch(err: any) {
             throw(err);
@@ -96,6 +106,7 @@ const repo = async (): Promise<iBlogRepo> => {
     return {
         getAllBlogPosts,
         getBlogPostByTitle,
+        getBlogPostsByAuthor,
         getBlogPostByID,
         addNewPost,
         editPostByID,

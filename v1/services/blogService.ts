@@ -50,6 +50,22 @@ export class BlogSingleton extends BaseService {
         }
     }
 
+    public async getBlogPostsByAuthor(author: string): Promise<iBlogPost | null> {
+        try {
+            const posts = await BlogSingleton.repo.getBlogPostsByAuthor(author);
+            
+            if(!posts) {
+                throw(new Error("Could not find blog post with the provided author."));
+            }
+
+            return posts;
+
+        } catch(err: any) {
+            winston.error(err.message);
+            throw(err);
+        }
+    }
+
     public async getBlogPostByID(postID: string): Promise<iBlogPost | null> {
         try {
             const post = await BlogSingleton.repo.getBlogPostByID(postID);
