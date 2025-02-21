@@ -145,6 +145,11 @@ router.post("/new", [auth, upload.fields([{name: "markdown", maxCount: 1}])], as
         // Get file data from request body using Multer middleware
         const files = req.files as { [fieldname: string]: Express.Multer.File[] };
         const formData = req.body;
+
+        const validUser = vBlog.isValidUser(req);
+        if(!validUser) {
+            throw(new Error("Cannot create post for the provided user."));
+        }
         
         // use GitHub api to generate html from markdown file
         const markdownFile = files['markdown'] ? files['markdown'][0] : null;

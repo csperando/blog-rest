@@ -25,7 +25,7 @@ afterAll(async () => {
     await server.close();
 });
 
-describe("Basic read and write functions", () => {
+describe("Basic blog CRUD operations", () => {
     it("Should add a new blog post", async () => {
         const req = testPost;
         const res = await request(server).post("/blog/new").send(req);
