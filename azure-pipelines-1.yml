@@ -9,7 +9,8 @@ trigger:
 variables:
 
   # Azure Resource Manager connection created during pipeline creation
-  azureSubscription: 'f4c842d7-f8e6-495c-9fcd-3c5977d54882'
+  # azureSubscription: 'f4c842d7-f8e6-495c-9fcd-3c5977d54882'
+  azureSubscription: '6781832e-09ea-4f98-931d-b1e54b515876'
 
   # Web app name
   webAppName: 'csperando-blog-rest'
