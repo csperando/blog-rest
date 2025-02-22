@@ -4,6 +4,7 @@ import { iBlogRepo } from "./BlogRepository";
 const testBlogPost: iBlogPost = {
     title: "This is a test",
     author: "Robert Paulson",
+    author_id: "1234",
     description: "Sample Blog Post",
     keywords: ["movie reference"],
     markdown: "test",
@@ -34,10 +35,10 @@ const mockRepo = async (): Promise<iBlogRepo> => {
         }
     }
 
-    const getBlogPostsByAuthor = async (author: string) => {
+    const getBlogPostsByUsername = async (author_id: string) => {
         try {
             const b = testBlogPost;
-            b.author = author;
+            b.author_id = author_id;
             return [b];
 
         } catch(err: any) {
@@ -119,7 +120,7 @@ const mockRepo = async (): Promise<iBlogRepo> => {
     return {
         getAllBlogPosts,
         getBlogPostByTitle,
-        getBlogPostsByAuthor,
+        getBlogPostsByUsername,
         getBlogPostByID,
         addNewPost,
         editPostByID,

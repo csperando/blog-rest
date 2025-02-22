@@ -3,6 +3,7 @@ import { Schema, model } from "mongoose";
 export interface iBlogPost {
     title: string;
     author: string;
+    author_id: string;
     description: string;
     keywords: string[];
     markdown: string;
@@ -17,6 +18,7 @@ const blogPostSchema = new Schema<iBlogPost>(
     {
         title: { type: String, required: true },
         author: { type: String, required: true },
+        author_id: { type: String, required: true },
         description: String,
         keywords: [String],
         markdown: String,

@@ -57,8 +57,8 @@ router.get("/posts/:userID", async (req: Request, res: Response, next: NextFunct
             throw(new Error("Could not find user."));
         }
 
-        const author = user.firstName + " " + user.lastName;
-        const posts = await blogService.getBlogPostsByAuthor(author);
+        const author_id = user.username;
+        const posts = await blogService.getBlogPostsByUsername(author_id);
 
         const userPostsResponse: iApiResponse = { 
             status: 200,

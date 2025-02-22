@@ -163,6 +163,7 @@ router.post("/new", [auth, upload.fields([{name: "markdown", maxCount: 1}])], as
 
         const n = {
             author: formData?.author,
+            author_id: req.body.username || null,
             title: formData?.title,
             description: formData?.description,
             keywords: formData?.keywords,
@@ -214,6 +215,7 @@ router.put("/edit/:postID", [auth, upload.fields([{name: "markdown", maxCount: 1
 
         const e = {
             author: formData?.author,
+            author_id: req.body.username || null,
             title: formData?.title,
             description: formData?.description,
             keywords: formData?.keywords,
