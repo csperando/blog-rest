@@ -191,11 +191,40 @@ router.post("/new", [auth, upload.fields([{name: "markdown", maxCount: 1}])], as
 /**
  * Edit an existing blog post
  */
-router.put("/edit/:postID", [auth], async (req: Request, res: Response, next: NextFunction) => {
+router.put("/edit/:postID", [auth, upload.fields([{name: "markdown", maxCount: 1}])], async (req: Request, res: Response, next: NextFunction) => {
     try {
+        // Get file data from request body using Multer middleware
+        const files = req.files as { [fieldname: string]: Express.Multer.File[] };
+        const formData = req.body;
+
+        const validUser = vBlog.isValidUser(req);
+        if(!validUser) {
+            throw(new Error("Cannot create post for the provided user."));
+        }
+
+        // use GitHub api to generate html from markdown file
+        const markdownFile = files['markdown'] ? files['markdown'][0] : null;
+        const markdown = markdownFile?.buffer.toString() || "";
+        const html = await renderHtml(markdown);
+
+        // parse keywords from form data or leave undefined
+        formData.keywords = (formData.keywords) 
+            ? (formData?.keywords as string).trim().split(",").map((el: any) => el.trim())
+            : undefined;
+
+        const e = {
+            author: formData?.author,
+            title: formData?.title,
+            description: formData?.description,
+            keywords: formData?.keywords,
+            thumbnail: formData?.thumbnail,
+            mime: formData?.mime,
+            markdown: markdown,
+            html: html,
+        } as iBlogPost;
+
         const postID = req.params.postID;
-        const postData = req.body;
-        const updatedPost = await blogService.editPostByID(postID, postData);
+        const updatedPost = await blogService.editPostByID(postID, e);
 
         const response = {
             status: 200,
