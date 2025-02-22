@@ -8,6 +8,7 @@ let testID: string;
 let testPost: iBlogPost = {
     title: "Test Blog Post",
     author: "TS-Jest",
+    author_id: "5678",
     description: "Test",
     keywords: [],
     markdown: "",
