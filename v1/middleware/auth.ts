@@ -8,7 +8,7 @@ export default async function auth(req: Request, res: Response, next: NextFuncti
         // get token from header
         const token = req.header("x-auth-token") || "error";
         if(token == "error") {
-            throw(new Error("Invalid token"));
+            throw(new Error("Token required."));
         }
 
         /*
