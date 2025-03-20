@@ -1,9 +1,11 @@
+import { NextFunction } from "express";
 import { Schema, model } from "mongoose";
 
 export interface iBlogPost {
     title: string;
     author: string;
     author_id: string;
+    slug?: string;
     description: string;
     keywords: string[];
     markdown: string;
@@ -19,6 +21,7 @@ const blogPostSchema = new Schema<iBlogPost>(
         title: { type: String, required: true },
         author: { type: String, required: true },
         author_id: { type: String, required: true },
+        slug: { type: String, required: false },
         description: String,
         keywords: [String],
         markdown: String,
@@ -35,6 +38,18 @@ const blogPostSchema = new Schema<iBlogPost>(
         }
     }
 );
+
+// update slug on save
+blogPostSchema.pre("save", function(): void {
+    let slug: string = this.title.trim().toLowerCase();
+    
+    // 'error: replaceAll does not exist on type string' ???
+    while(slug.indexOf(" ") != -1) {
+        slug = slug.replace(" ", "-");
+    }
+
+    this.slug = slug;
+});
 
 export const BlogPost = model<iBlogPost>("BlogPost", blogPostSchema);
 

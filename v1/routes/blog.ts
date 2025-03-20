@@ -70,6 +70,29 @@ router.get("/keywords", async (req: Request, res: Response, next: NextFunction) 
 /**
  * Get blog post by blog post ID
  */
+router.get("/findBySlug/:slug", async (req: Request, res: Response, next: NextFunction) => {
+    try {
+        const slug = (req.params.slug as string);
+        const post = await blogService.getBlogPostBySlug(slug);
+
+        const blogResponse: iApiResponse = {
+            status: 200,
+            errors: [],
+            data: post,
+        }
+        
+        res.status(blogResponse.status).json(blogResponse);
+
+    } catch (err: any) {
+        winston.error(err.message);
+        next(err);
+    } 
+    
+});
+
+/**
+ * Get blog post by blog post ID
+ */
 router.get("/find/:postID", [vBlog.isValidObjectID], async (req: Request, res: Response, next: NextFunction) => {
     try {
         const postID = req.params.postID;
@@ -91,7 +114,7 @@ router.get("/find/:postID", [vBlog.isValidObjectID], async (req: Request, res: R
 });
 
 /**
- * Get blog post by blog post ID
+ * Get blog post by keywords
  */
 router.get("/find", async (req: Request, res: Response, next: NextFunction) => {
     try {

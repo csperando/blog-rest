@@ -5,6 +5,7 @@ export interface iBlogRepo {
     getAllBlogPosts: () => Promise<any>;
     getBlogPostByTitle: (title: string) => Promise<any>;
     getBlogPostsByUsername: (author: string) => Promise<any>;
+    getBlogPostBySlug: (slug: string) => Promise<any>;
     getBlogPostByID: (postID: string) => Promise<any>;
     addNewPost: (postData: iBlogPost) => Promise<any>;
     editPostByID: (postID: string, postData: iBlogPost) => Promise<any>;
@@ -53,6 +54,15 @@ const repo = async (): Promise<iBlogRepo> => {
         }
     }
 
+    const getBlogPostBySlug = async (slug: string) => {
+        try {
+            return await BlogPost.findOne({ slug: slug });
+
+        } catch(err: any) {
+            throw(err);
+        }
+    }
+    
     const getBlogPostByID = async (postID: string) => {
         try {
             return await BlogPost.findById(postID);
@@ -107,6 +117,7 @@ const repo = async (): Promise<iBlogRepo> => {
         getAllBlogPosts,
         getBlogPostByTitle,
         getBlogPostsByUsername,
+        getBlogPostBySlug,
         getBlogPostByID,
         addNewPost,
         editPostByID,

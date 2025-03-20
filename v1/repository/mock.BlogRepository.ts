@@ -3,6 +3,7 @@ import { iBlogRepo } from "./BlogRepository";
 
 const testBlogPost: iBlogPost = {
     title: "This is a test",
+    slug: "this-is-a-test",
     author: "Robert Paulson",
     author_id: "1234",
     description: "Sample Blog Post",
@@ -52,6 +53,15 @@ const mockRepo = async (): Promise<iBlogRepo> => {
             b.keywords = [keyword];
             return [b];
 
+        } catch(err: any) {
+            throw(err);
+        }
+    }
+
+    // TODO
+    const getBlogPostBySlug = async (slug: string) => {
+        try {
+            return testBlogPost;
         } catch(err: any) {
             throw(err);
         }
@@ -121,6 +131,7 @@ const mockRepo = async (): Promise<iBlogRepo> => {
         getAllBlogPosts,
         getBlogPostByTitle,
         getBlogPostsByUsername,
+        getBlogPostBySlug,
         getBlogPostByID,
         addNewPost,
         editPostByID,
