@@ -39,7 +39,9 @@ const blogPostSchema = new Schema<iBlogPost>(
     }
 );
 
-// update slug on save
+// update slug on save and update
+
+// when using 'save' this is the document
 blogPostSchema.pre("save", function(): void {
     let slug: string = this.title.trim().toLowerCase();
     
@@ -49,6 +51,16 @@ blogPostSchema.pre("save", function(): void {
     }
 
     this.slug = slug;
+});
+
+// When using 'findOneAndUpdate' this is the query
+blogPostSchema.pre('findOneAndUpdate', function(): void {
+    const doc = this.getUpdate() as iBlogPost;
+
+    if(!doc.slug) {
+        doc.slug = doc.title.trim().toLowerCase().replace(/ /g, "-");
+        this.setUpdate(doc);
+    }
 });
 
 export const BlogPost = model<iBlogPost>("BlogPost", blogPostSchema);
