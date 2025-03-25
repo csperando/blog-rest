@@ -4,6 +4,7 @@ import bodyParser from "body-parser";
 
 import ping from "./ping";
 import blogRouter from "./blog";
+import seriesRouter from "./series";
 import userRouter from "./user";
 import authRouter from "./auth";
 
@@ -15,4 +16,5 @@ export default (server: Express) => {
     
     server.use(bodyParser.urlencoded({ extended: false }));
     server.use("/blog", blogRouter);
+    server.use("/series", seriesRouter);
 }
