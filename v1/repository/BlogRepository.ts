@@ -18,7 +18,7 @@ export interface iBlogRepo {
 const repo = async (): Promise<iBlogRepo> => {
     const getAllBlogPosts = async () => {
         try {
-            return await BlogPost.find({}).sort({ created: 'asc' });
+            return await BlogPost.find({}).sort({ _id: -1 });
 
         } catch(err: any) {
             throw(err);
