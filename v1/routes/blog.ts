@@ -380,14 +380,8 @@ router.put("/edit/:postID", [auth, upload.fields([{name: "markdown", maxCount: 1
         const files = req.files as { [fieldname: string]: Express.Multer.File[] };
         const formData = req.body;
 
-        // prevent duplicate titles
-        const dupes = await blogService.getBlogPostByTitle(formData.title);
-        if(dupes?.length) {
-            throw(new Error("Title already exists."));
-        }
-
         // create edited post object
-        const e = _.pick(formData, ["title", "description", "keywords", "thumbnail", "mime"]) as iBlogPost;
+        const e = _.pick(formData, ["description", "keywords", "thumbnail", "mime"]) as iBlogPost;
 
         // use GitHub api to generate html from markdown file if provided
         if(files) {

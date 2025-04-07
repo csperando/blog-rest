@@ -22,7 +22,7 @@ export const blogPostSchema = new Schema<iBlogPost>(
         author: { type: String, required: true },
         author_id: { type: String, required: true },
         slug: { type: String, required: false },
-        description: String,
+        description: { type: String, required: true },
         keywords: [String],
         markdown: String,
         html: String,
