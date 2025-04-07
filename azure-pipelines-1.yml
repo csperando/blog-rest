@@ -44,7 +44,7 @@ stages:
     - script: |
         set NODE_ENV=prod
         echo "NODE_ENV"
-        echo $(variables.NODE_ENV)
+        echo $(variables.env.NODE_ENV)
 
         set rest_port=${{ variables.rest_port }}
         echo ${{ variables.rest_port }}
