@@ -47,7 +47,7 @@ stages:
         echo $(NODE_ENV)
 
         set rest_port=${{ variables.rest_port }}
-        echo ${{ rest_port }}
+        echo $(rest_port)
 
         set jwt_key=${{ variables.jwt_key }}
         set rest_mongo_prefix='mongodb+srv://'
