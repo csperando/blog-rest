@@ -19,7 +19,7 @@ variables:
   environmentName: 'csperando-blog-rest'
 
   # Agent VM image name
-  vmImageName: 'ubuntu-latest'
+  vmImageName: 'windows-latest'
 
   
 
