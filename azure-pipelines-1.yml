@@ -42,6 +42,11 @@ stages:
       displayName: 'Install Node.js'
 
     - script: |
+        npm install
+        npm run build --if-present
+      displayName: 'npm install and build'
+
+    - script: |
         set NODE_ENV=$(NODE_ENV)
         set rest_port=$(rest_port)
         set jwt_key=$(jwt_key)
@@ -53,17 +58,8 @@ stages:
         set rest_mongo_db_dev='blog_dev'
         set rest_mongo_db_test='blog_test'
         set rest_mongo_params='?retryWrites=true&w=majority'
-      displayName: 'Setup .env vars'
-
-    - script: |
-        npm install
-        npm run build --if-present
-      displayName: 'npm install and build'
-
-    - script: |
         npm run test --if-present
-      displayName: 'run automated tests'
-
+      displayName: 'Tests'
 
     - task: ArchiveFiles@2
       displayName: 'Archive files'
