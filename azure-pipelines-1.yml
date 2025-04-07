@@ -21,13 +21,14 @@ variables:
   # Agent VM image name
   vmImageName: 'ubuntu-latest'
 
-  variables:
-  - group: env
+  
 
 
 stages:
 - stage: Build
   displayName: Build stage
+  variables:
+  - group: env
   jobs:
   - job: Build
     displayName: Build
