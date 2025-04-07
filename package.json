@@ -6,7 +6,7 @@
   "scripts": {
     "build": "npx tsc",
     "dev": "set NODE_ENV=dev&& ts-node-dev v1/server.ts",
-    "test": "set NODE_ENV=test&& jest --detectOpenHandles --config=./v1/jest.config.ts",
+    "test": "set NODE_ENV=test&& jest --detectOpenHandles --config=./v1/jest.config.ts --bail --forceExit",
     "test-local": "set NODE_ENV=test&& jest --watchAll --detectOpenHandles --config=./v1/jest.config.ts --coverage",
     "start": "node dist/server.js"
   },
