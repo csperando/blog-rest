@@ -342,6 +342,10 @@ router.post("/new", [auth, upload.fields([{name: "markdown", maxCount: 1}])], as
 
         // make sure all keywords are trimmed
         if(n.keywords) {
+            if(typeof n.keywords == "string") {
+                n.keywords = (n.keywords as string).split(",");
+            }
+
             n.keywords = n.keywords.map((el: any) => el.trim());
         }
 
@@ -394,6 +398,10 @@ router.put("/edit/:postID", [auth, upload.fields([{name: "markdown", maxCount: 1
 
         // make sure all keywords are trimmed
         if(e.keywords) {
+            if(typeof e.keywords == "string") {
+                e.keywords = (e.keywords as string).split(",");
+            }
+
             e.keywords = e.keywords.map((el: any) => el.trim());
         }
 
