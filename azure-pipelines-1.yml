@@ -42,17 +42,12 @@ stages:
       displayName: 'Install Node.js'
 
     - script: |
-        set NODE_ENV=prod
-        echo "NODE_ENV"
-        echo $(NODE_ENV)
-
-        set rest_port=${{ variables.rest_port }}
-        echo $(rest_port)
-
-        set jwt_key=${{ variables.jwt_key }}
+        set NODE_ENV=$(NODE_ENV)
+        set rest_port=$(rest_port)
+        set jwt_key=$(jwt_key)
         set rest_mongo_prefix='mongodb+srv://'
-        set rest_mongo_user=${{ variables.REST_MONGO_USER }}
-        set rest_mongo_password=${{ variables.REST_MONGO_PASSWORD }}
+        set rest_mongo_user=$(REST_MONGO_USER)
+        set rest_mongo_password=$(REST_MONGO_PASSWORD)
         set rest_mongo_host='@cluster0.1lrnz.mongodb.net/'
         set rest_mongo_db='blog'
         set rest_mongo_db_dev='blog_dev'
