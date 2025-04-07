@@ -21,14 +21,14 @@ variables:
   # Agent VM image name
   vmImageName: 'windows-latest'
 
-  
-
 
 stages:
 - stage: Build
   displayName: Build stage
+  
   variables:
-  - group: env
+  - group: blog-rest-env
+  
   jobs:
   - job: Build
     displayName: Build
@@ -45,21 +45,6 @@ stages:
         npm install
         npm run build --if-present
       displayName: 'npm install and build'
-
-    # - script: |
-    #     set NODE_ENV=$(NODE_ENV)
-    #     set rest_port=$(rest_port)
-    #     set jwt_key=$(jwt_key)
-    #     set rest_mongo_prefix='mongodb+srv://'
-    #     set rest_mongo_user=$(REST_MONGO_USER)
-    #     set rest_mongo_password=$(REST_MONGO_PASSWORD)
-    #     set rest_mongo_host='@cluster0.1lrnz.mongodb.net/'
-    #     set rest_mongo_db='blog'
-    #     set rest_mongo_db_dev='blog_dev'
-    #     set rest_mongo_db_test='blog_test'
-    #     set rest_mongo_params='?retryWrites=true&w=majority'
-    #     npm run test --if-present
-    #   displayName: 'Tests'
 
     - script: |
         npm run test --if-present
