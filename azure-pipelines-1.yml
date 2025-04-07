@@ -44,10 +44,10 @@ stages:
     - script: |
         set NODE_ENV=prod
         echo "NODE_ENV"
-        echo $(variables.env.NODE_ENV)
+        echo $(NODE_ENV)
 
         set rest_port=${{ variables.rest_port }}
-        echo ${{ variables.rest_port }}
+        echo ${{ rest_port }}
 
         set jwt_key=${{ variables.jwt_key }}
         set rest_mongo_prefix='mongodb+srv://'
