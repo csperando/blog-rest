@@ -29,7 +29,7 @@ const mockRepo = async (): Promise<iBlogRepo> => {
         try {
             const b = testBlogPost;
             b.title = title;
-            return b;
+            return [b];
 
         } catch(err: any) {
             throw(err);
@@ -61,7 +61,7 @@ const mockRepo = async (): Promise<iBlogRepo> => {
     // TODO
     const getBlogPostBySlug = async (slug: string) => {
         try {
-            return testBlogPost;
+            return [testBlogPost];
         } catch(err: any) {
             throw(err);
         }
@@ -70,7 +70,7 @@ const mockRepo = async (): Promise<iBlogRepo> => {
     // TODO
     const getBlogPostByID = async (postID: string) => {
         try {
-            return testBlogPost;
+            return [testBlogPost];
         } catch(err: any) {
             throw(err);
         }
@@ -99,7 +99,7 @@ const mockRepo = async (): Promise<iBlogRepo> => {
             edited.created = postData.created;
             edited.updated = postData.updated;
 
-            return edited;
+            return [edited];
 
         } catch(err: any) {
             throw(err);
@@ -108,7 +108,7 @@ const mockRepo = async (): Promise<iBlogRepo> => {
 
     const deletePostByID = async () => {
         try {
-            return testBlogPost;
+            return [testBlogPost];
             
         } catch(err: any) {
             throw(err);

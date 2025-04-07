@@ -1,12 +1,12 @@
 import { BaseService } from "./Base.service";
-import BlogRepository from "../repository/BlogRepository";
+import BlogRepository, { iBlogRepo } from "../repository/BlogRepository";
 import { iBlogPost } from "../models/Blog";
 import winston from "winston";
 import { iConfig } from "../config";
 
 export class BlogSingleton extends BaseService {
     private static instance: BlogSingleton;
-    private static repo: any;
+    private static repo: iBlogRepo;
 
     private constructor() {
         super();
@@ -24,7 +24,12 @@ export class BlogSingleton extends BaseService {
         return BlogSingleton.instance;
     }
 
-    public async getAllBlogPosts() {
+    /**
+     * Get all blog posts
+     * 
+     * @returns iBlogPost[]
+     */
+    public async getAllBlogPosts(): Promise<iBlogPost[] | null> {
         try {
             const posts = await BlogSingleton.repo.getAllBlogPosts();
             return posts;
@@ -34,7 +39,14 @@ export class BlogSingleton extends BaseService {
         }
     }
 
-    public async getBlogPostByTitle(title: string): Promise<iBlogPost | null> {
+    /**
+     * Get blogs with matching titles
+     * Used to assist with search/filter
+     * 
+     * @param title String
+     * @returns iBlogPost[]
+     */
+    public async getBlogPostByTitle(title: string): Promise<iBlogPost[] | null> {
         try {
             const post = await BlogSingleton.repo.getBlogPostByTitle(title);
             
@@ -50,7 +62,7 @@ export class BlogSingleton extends BaseService {
         }
     }
 
-    public async getBlogPostsByUsername(username: string): Promise<iBlogPost | null> {
+    public async getBlogPostsByUsername(username: string): Promise<iBlogPost[] | null> {
         try {
             const posts = await BlogSingleton.repo.getBlogPostsByUsername(username);
             
@@ -66,7 +78,7 @@ export class BlogSingleton extends BaseService {
         }
     }
 
-    public async getBlogPostBySlug(slug: string): Promise<iBlogPost | null> {
+    public async getBlogPostBySlug(slug: string): Promise<iBlogPost[] | null> {
         try {
             const post = await BlogSingleton.repo.getBlogPostBySlug(slug);
 
@@ -82,9 +94,9 @@ export class BlogSingleton extends BaseService {
         }
     }
 
-    public async getBlogPostByID(postID: string): Promise<iBlogPost | null> {
+    public async getBlogPostByID(postID: string): Promise<iBlogPost[] | null> {
         try {
-            const post = await BlogSingleton.repo.getBlogPostByID(postID);
+            const post = await BlogSingleton.repo.getBlogPostByID(postID) as iBlogPost[];
 
             if(!post) {
                 throw(new Error("Could not find blog post with the provided id."));
