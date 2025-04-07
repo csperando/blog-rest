@@ -57,7 +57,7 @@ blogPostSchema.pre("save", function(): void {
 blogPostSchema.pre('findOneAndUpdate', function(): void {
     const doc = this.getUpdate() as iBlogPost;
 
-    if(!doc.slug) {
+    if(!doc.slug && doc.title) {
         doc.slug = doc.title.trim().toLowerCase().replace(/ /g, "-");
         this.setUpdate(doc);
     }

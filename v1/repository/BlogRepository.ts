@@ -83,7 +83,8 @@ const repo = async (): Promise<iBlogRepo> => {
 
     const editPostByID = async (postID: string, postData: iBlogPost) => {
         try {
-            return await BlogPost.findOneAndUpdate( { _id: postID }, postData, { returnDocument: "after" } );
+            const edited = await BlogPost.findOneAndUpdate( { _id: postID }, postData, { returnDocument: "after" } );
+            return edited;
 
         } catch(err: any) {
             throw(err);

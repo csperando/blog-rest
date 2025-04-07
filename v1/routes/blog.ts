@@ -3,6 +3,7 @@ import winston from "winston";
 import multer from "multer";
 const storage = multer.memoryStorage();
 const upload = multer({ storage: storage });
+import * as _ from "lodash";
 
 import { iApiResponse } from "../models/apiResponse";
 import { BlogSingleton } from "../services/blogService";
@@ -217,37 +218,34 @@ router.post("/new", [auth, upload.fields([{name: "markdown", maxCount: 1}])], as
  */
 router.put("/edit/:postID", [auth, upload.fields([{name: "markdown", maxCount: 1}])], async (req: Request, res: Response, next: NextFunction) => {
     try {
-        // Get file data from request body using Multer middleware
-        const files = req.files as { [fieldname: string]: Express.Multer.File[] };
-        const formData = req.body;
-
+        // validate
         const validUser = vBlog.isValidUser(req);
         if(!validUser) {
             throw(new Error("Cannot create post for the provided user."));
         }
 
-        // use GitHub api to generate html from markdown file
-        const markdownFile = files['markdown'] ? files['markdown'][0] : null;
-        const markdown = markdownFile?.buffer.toString() || "";
-        const html = await renderHtml(markdown);
+        // Parse req - Get file data from request body using Multer middleware
+        const files = req.files as { [fieldname: string]: Express.Multer.File[] };
+        const formData = req.body;
 
-        // parse keywords from form data or leave undefined
-        formData.keywords = (formData.keywords) 
-            ? (formData?.keywords as string).trim().split(",").map((el: any) => el.trim())
-            : undefined;
+        // create edited post object
+        const e = _.pick(formData, ["title", "description", "keywords", "thumbnail", "mime"]) as iBlogPost;
 
-        const e = {
-            author: formData?.author,
-            author_id: req.body.username || null,
-            title: formData?.title,
-            description: formData?.description,
-            keywords: formData?.keywords,
-            thumbnail: formData?.thumbnail,
-            mime: formData?.mime,
-            markdown: markdown,
-            html: html,
-        } as iBlogPost;
+        // use GitHub api to generate html from markdown file if provided
+        if(files) {
+            const markdownFile = files['markdown'] ? files['markdown'][0] : null;
+            if(markdownFile) {
+                e.markdown = markdownFile?.buffer.toString() || "";
+                e.html = await renderHtml(e.markdown) || "";
+            }
+        }
 
+        // make sure all keywords are trimmed
+        if(e.keywords) {
+            e.keywords = e.keywords.map((el: any) => el.trim());
+        }
+
+        // update model
         const postID = req.params.postID;
         const updatedPost = await blogService.editPostByID(postID, e);
 
