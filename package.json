@@ -6,8 +6,8 @@
   "scripts": {
     "build": "npx tsc",
     "dev": "set NODE_ENV=dev&& ts-node-dev v1/server.ts",
-    "test": "set NODE_ENV=test&& jest --detectOpenHandles --config=./v1/jest.config.ts --bail --forceExit",
-    "test-local": "set NODE_ENV=test&& jest --watchAll --detectOpenHandles --config=./v1/jest.config.ts --coverage",
+    "test": "set NODE_ENV=test&& set SUPPRESS_JEST_WARNINGS=1&& jest --detectOpenHandles --config=./v1/jest.config.ts --bail --forceExit",
+    "test-local": "set NODE_ENV=test&& set SUPPRESS_JEST_WARNINGS=1&& jest --watchAll --detectOpenHandles --config=./v1/jest.config.ts --coverage",
     "start": "node dist/server.js"
   },
   "author": "Coleman Sperando",

@@ -12,12 +12,14 @@ export class BlogSingleton extends BaseService {
         super();
     }
 
-    public static async getInstance(config: iConfig): Promise<BlogSingleton> {
+    public static async getInstance(config: iConfig, repo: any = null): Promise<BlogSingleton> {
         BaseService.config = config;
-        BlogSingleton.repo = await BlogRepository.repo();
+        
+        // mock repo passed for testing
+        BlogSingleton.repo = (repo) ? repo : await BlogRepository.repo();
 
         if(!BlogSingleton.instance) {
-            winston.info("New Blog service instance created.");
+            // winston.info("New Blog service instance created.");
             BlogSingleton.instance = new BlogSingleton();
         }
 
