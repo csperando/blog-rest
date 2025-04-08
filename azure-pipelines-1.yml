@@ -20,7 +20,7 @@ variables:
 
   # Agent VM image name
   # vmImageName: 'windows-latest'
-  vmImageName: 'ubuntu-latest'
+  vmImageName: 'ubuntu-20.04'
 
 
 stages:
