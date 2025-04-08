@@ -54,9 +54,9 @@ stages:
         npm run build
       displayName: 'npm build'
 
-    # - script: |
-    #     npm run test
-    #   displayName: 'npm test'
+    - script: |
+        npm run test
+      displayName: 'npm test'
 
     - task: ArchiveFiles@2
       displayName: 'Archive files'
