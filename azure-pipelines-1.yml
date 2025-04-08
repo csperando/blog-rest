@@ -55,6 +55,21 @@ stages:
       displayName: 'npm build'
 
     - script: |
+        echo "rest_port=$(rest_port)" >> .env
+        echo "rest_mongo_db=$(rest_mongo_db)" >> .env
+        echo "rest_mongo_db_dev=$(rest_mongo_db_dev)" >> .env
+        echo "rest_mongo_db_test=$(rest_mongo_db_test)" >> .env
+        echo "rest_mongo_host=$(rest_mongo_host)" >> .env
+        echo "rest_mongo_params=$(rest_mongo_params)" >> .env
+        echo "rest_mongo_prefix=$(rest_mongo_prefix)" >> .env
+        echo "rest_mongo_password=$(rest_mongo_password)" >> .env
+        echo "rest_mongo_user=$(rest_mongo_user)" >> .env
+        echo "jwt_key=$(jwt_key)" >> .env
+        echo "imgur_client_id=$(imgur_client_id)" >> .env
+        echo "imgur_client_secret=$(imgur_client_secret)" >> .env
+      displayName: 'Create .env file'
+
+    - script: |
         npm run test
       displayName: 'npm test'
 
