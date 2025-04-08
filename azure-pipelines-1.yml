@@ -44,6 +44,10 @@ stages:
     - script: |
         npm install
       displayName: 'npm install'
+
+    - script: |
+        npm rebuild bcrypt --build-from-source
+      displayName: 'bcrypt bug fix'
     
     - script: |
         npm run build
