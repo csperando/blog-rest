@@ -38,14 +38,20 @@ stages:
     steps:
     - task: NodeTool@0
       inputs:
-        versionSpec: '19.x'
+        versionSpec: '20.x'
       displayName: 'Install Node.js'
 
     - script: |
         npm install
-        npm run test
+      displayName: 'npm install'
+    
+    - script: |
         npm run build
-      displayName: 'npm install, test, and build'
+      displayName: 'npm build'
+
+    - script: |
+        npm run test
+      displayName: 'npm test'
 
     - task: ArchiveFiles@2
       displayName: 'Archive files'
