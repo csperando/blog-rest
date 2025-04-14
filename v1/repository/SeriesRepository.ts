@@ -2,7 +2,8 @@ import { iSeries, Series } from "../models/Series";
 
 // define the type of the return object from the repo() method
 export interface iSeriesRepo {
-    getAllSeries: () => Promise<any>;
+    getAllSeries: () => Promise<iSeries[] | null>;
+    getSeriesBySlug: (slug: string) => Promise<any>;
     addNewSeries: (seriesData: iSeries) => Promise<any>;
 }
 
@@ -11,6 +12,15 @@ const repo = async (): Promise<iSeriesRepo> => {
     const getAllSeries = async () => {
         try {
             return await Series.find({}).sort({ _id: -1 });
+
+        } catch(err: any) {
+            throw(err);
+        }
+    }
+
+    const getSeriesBySlug = async (slug: string) => {
+        try {
+            return await Series.find({ slug: slug });
 
         } catch(err: any) {
             throw(err);
@@ -28,6 +38,7 @@ const repo = async (): Promise<iSeriesRepo> => {
 
     return {
         getAllSeries,
+        getSeriesBySlug,
         addNewSeries,
     }
 };

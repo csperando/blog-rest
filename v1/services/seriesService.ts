@@ -34,6 +34,16 @@ export class SeriesSingleton extends BaseService {
         }
     }
 
+    public async getSeriesBySlug(slug: String) {
+        try {
+            const series = await SeriesSingleton.repo.getSeriesBySlug(slug);
+            return series;
+
+        } catch(err: any) {
+            throw(err);
+        }
+    }
+
     public async addNewSeries(series: iSeries) {
         try {
             const n = SeriesSingleton.repo.addNewSeries(series);

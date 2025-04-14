@@ -49,6 +49,30 @@ router.get("/", async (req: Request, res: Response, next: NextFunction) => {
 
 
 /**
+ * Get series by name
+ */
+router.get("/:slug", async (req: Request, res: Response, next: NextFunction) => {
+    try {
+        const name = req.params.slug;
+        const series: iSeries[] = await seriesService.getSeriesBySlug(name);
+
+        const seriesResponse: iApiResponse = {
+            status: 200,
+            errors: [],
+            data: series,
+        }
+        
+        res.status(seriesResponse.status).json(seriesResponse);
+
+    } catch (err: any) {
+        winston.error(err.message);
+        next(err);
+    }
+
+});
+
+
+/**
  * Create new series
  */
 router.post("/", [auth], async (req: Request, res: Response, next: NextFunction) => {
