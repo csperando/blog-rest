@@ -432,6 +432,12 @@ router.put("/edit/:postID", [auth, upload.fields([{name: "markdown", maxCount: 1
  */
 router.delete("/delete/:postID", [auth], async (req: Request, res: Response, next: NextFunction) => {
     try {
+        // TODO - validate/refactor to middleware
+        // const validUser = vBlog.isValidUser(req);
+        // if(!validUser) {
+        //     throw(new Error("Cannot delete post for the provided user."));
+        // }
+
         const postID = req.params.postID;
         const deletedPost = await blogService.deletePostByID(postID);
 
