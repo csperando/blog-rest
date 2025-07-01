@@ -127,6 +127,22 @@ export class BlogSingleton extends BaseService {
             throw(err);
         }
     }
+    
+    public async getBlogPostsByKeywordVector(embeddings: number[]): Promise<iBlogPost[] | null> {
+        try {
+            const posts = await BlogSingleton.repo.getBlogPostsByKeywordVector(embeddings);
+
+            if(!posts) {
+                throw(new Error("Could not find blogs with the provided vector."));
+            }
+
+            return posts;
+
+        } catch(err: any) {
+            winston.error(err.message);
+            throw(err);
+        }
+    }
 
     public async addNewPost(post: iBlogPost) {
         try {

@@ -267,6 +267,26 @@ router.get("/find", async (req: Request, res: Response, next: NextFunction) => {
     
 });
 
+router.post("/search", async (req: Request, res: Response, next: NextFunction) => {
+    try {
+        const embeddings = req.body.embeddings;
+        const posts = await blogService.getBlogPostsByKeywordVector(embeddings);
+
+        const blogResponse: iApiResponse = {
+            status: 200,
+            errors: [],
+            data: posts,
+        }
+        
+        res.status(blogResponse.status).json(blogResponse);
+
+    } catch (err: any) {
+        winston.error(err.message);
+        next(err);
+    } 
+    
+});
+
 /**
  * Get blog post by title
  * 

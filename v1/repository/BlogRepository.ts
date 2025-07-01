@@ -12,6 +12,7 @@ export interface iBlogRepo {
     deletePostByID: (postID: string) => Promise<iBlogPost[] | null>;
     getTopKeywords: () => Promise<any>;
     getBlogPostsByKeyword: (keyword: string) => Promise<iBlogPost[] | null>;
+    getBlogPostsByKeywordVector: (embeddings: number[]) => Promise<iBlogPost[] | null>;
 }
 
 // main repo init function to be called in the service factories
@@ -76,6 +77,22 @@ const repo = async (): Promise<iBlogRepo> => {
             const re = new RegExp(keyword, "i");
             const posts = await BlogPost.find({ keywords: { $regex: re } });
             return posts;
+
+        } catch(err: any) {
+            throw(err);
+        }
+    }
+    
+    /**
+     * Get blog posts using vector search
+     * Embeddings should be generated on the client side
+     * 
+     * @param embeddings 
+     * @returns iBlogPost[]
+     */
+    const getBlogPostsByKeywordVector = async (embeddings: number[]) => {
+        try {
+            return await BlogPost.vectorSearch(embeddings);
 
         } catch(err: any) {
             throw(err);
@@ -169,6 +186,7 @@ const repo = async (): Promise<iBlogRepo> => {
         deletePostByID,
         getTopKeywords,
         getBlogPostsByKeyword,
+        getBlogPostsByKeywordVector,
     }
 };
 

@@ -25,6 +25,7 @@ const mockRepo: jest.Mocked<iBlogRepo> = {
     deletePostByID: jest.fn(),
     getTopKeywords: jest.fn(),
     getBlogPostsByKeyword: jest.fn(),
+    getBlogPostsByKeywordVector: jest.fn(),
 }
 
 export default { mockRepo };

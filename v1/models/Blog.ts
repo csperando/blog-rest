@@ -1,5 +1,6 @@
-import { NextFunction } from "express";
-import { Schema, model } from "mongoose";
+import { Model, Schema, model } from "mongoose";
+import { pipeline } from '@huggingface/transformers';
+import winston from "winston";
 
 export interface iBlogPost {
     title: string;
@@ -14,6 +15,8 @@ export interface iBlogPost {
     mime?: string;
     created?: string;
     updated?: string;
+    post_embedding?: number[];
+    vectorSearch(embeddings: number[]): Promise<iBlogPost[]> 
 }
 
 export const blogPostSchema = new Schema<iBlogPost>(
@@ -30,6 +33,7 @@ export const blogPostSchema = new Schema<iBlogPost>(
         mime: String,
         created: String,
         updated: String,
+        post_embedding: { type: [Number], required: false },
     },
     {
         timestamps: {
@@ -39,33 +43,113 @@ export const blogPostSchema = new Schema<iBlogPost>(
     }
 );
 
-// update slug on save and update
+/**
+ * 
+ * @param embeddings 
+ * 
+ * Blog vector indexes should be defined as follows within MongoDB Atlas:
+ * {
+    "mappings": {
+        "dynamic": true,
+        "fields": {
+        "post_embedding": {
+            "dimensions": 384,
+            "similarity": "cosine",
+            "type": "knnVector"
+        }
+        }
+    }
+    }
+ */
+blogPostSchema.static('vectorSearch', function(embeddings: number[]) {
+    const agg: any = [
+        {
+            "$vectorSearch": {
+                "index": "blog",
+                "path": "post_embedding",
+                "queryVector": embeddings,
+                "numCandidates": 20,
+                "limit": 5,
+            }
+        }, {
+            "$project": {
+                "_id": 1,
+                "title": 1,
+                "slug": 1,
+                "score": {
+                    "$meta": "vectorSearchScore"
+                },
+            }
+        },
+    ];
+
+    return this.aggregate(agg);
+});
 
 // when using 'save' this is the document
-blogPostSchema.pre("save", function(): void {
-    let slug: string = this.title.trim().toLowerCase();
-    
-    // 'error: replaceAll does not exist on type string' ???
-    while(slug.indexOf(" ") != -1) {
-        slug = slug.replace(" ", "-");
+blogPostSchema.pre("save", async function(): Promise<void> {
+    // update slug from title
+    try {
+
+        let slug: string = this.title.trim().toLowerCase();
+        while(slug.indexOf(" ") != -1) {
+            slug = slug.replace(" ", "-");
+        }
+        this.slug = slug;
+    } catch(err: any) {
+        winston.error(err);
     }
 
-    this.slug = slug;
+    // create embeddings
+    try {
+        const extractor = await pipeline(
+            "feature-extraction",
+            "mixedbread-ai/mxbai-embed-xsmall-v1",
+            { device: "cpu" },
+        );
+        const embeddings = await extractor(this.html, { pooling: "mean", normalize: true }) as any;
+        this.post_embedding = embeddings.data;
+    } catch(err: any) {
+        winston.error(err);
+    }
 });
 
 // When using 'findOneAndUpdate' this is the query
-blogPostSchema.pre('findOneAndUpdate', function(): void {
+blogPostSchema.pre('findOneAndUpdate', async function(): Promise<void> {
+    // get document
     const doc = this.getUpdate() as iBlogPost;
-
-    if(!doc.slug && doc.title) {
-        doc.slug = doc.title.trim().toLowerCase().replace(/ /g, "-");
-        this.setUpdate(doc);
+    
+    // update slug
+    try {
+        if(!doc.slug && doc.title) {
+            doc.slug = doc.title.trim().toLowerCase().replace(/ /g, "-");
+        }
+    } catch(err: any) {
+        winston.error(err);   
     }
+    
+    // create embeddings
+    try {
+        const extractor = await pipeline(
+            "feature-extraction",
+            "mixedbread-ai/mxbai-embed-xsmall-v1",
+            { device: "cpu" },
+        );
+        const embeddings = await extractor(doc.html, { pooling: "mean", normalize: true }) as any;
+        doc.post_embedding = Array.from(embeddings.data);
+    } catch(err: any) {
+        winston.error(err);   
+    }
+
+    this.setUpdate(doc);
 });
 
-export const BlogPost = model<iBlogPost>("BlogPost", blogPostSchema);
+// Extend Mongoose's Model interface with the static method
+export interface BlogPostModel extends Model<iBlogPost> {
+    vectorSearch(embeddings: number[]): Promise<iBlogPost[]>;
+}
 
+export const BlogPost = model<iBlogPost, BlogPostModel>("BlogPost", blogPostSchema);
 
 // View models
-
 export const TopKeywords = model<iBlogPost>("TopKeywords", blogPostSchema);
