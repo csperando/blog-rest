@@ -17,6 +17,7 @@ let data: iBlogPost = {
     keywords: ["test", "jest", "narcolepsy"],
     markdown: "text here",
     html: "<p>text here</p>",
+    vectorSearch: async (embeddings) => { return [data] },
 }
 
 beforeAll(async () => {

@@ -11,7 +11,8 @@ const testBlogPost: iBlogPost = {
     markdown: "test",
     html: "<p>test</p>",
     created: "",
-    updated: ""
+    updated: "",
+    vectorSearch: async (embeddings) => { return [testBlogPost] },
 };
 
 const mockRepo: jest.Mocked<iBlogRepo> = {

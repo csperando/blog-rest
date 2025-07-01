@@ -15,6 +15,7 @@ let testPost: iBlogPost = {
     html: "",
     created: "",
     updated: "",
+    vectorSearch: async (embeddings) => { return [testPost] },
 };
 
 beforeAll(async () => {

@@ -43,24 +43,7 @@ export const blogPostSchema = new Schema<iBlogPost>(
     }
 );
 
-/**
- * 
- * @param embeddings 
- * 
- * Blog vector indexes should be defined as follows within MongoDB Atlas:
- * {
-    "mappings": {
-        "dynamic": true,
-        "fields": {
-        "post_embedding": {
-            "dimensions": 384,
-            "similarity": "cosine",
-            "type": "knnVector"
-        }
-        }
-    }
-    }
- */
+// custom method
 blogPostSchema.static('vectorSearch', function(embeddings: number[]) {
     const agg: any = [
         {
