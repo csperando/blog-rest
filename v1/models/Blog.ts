@@ -59,6 +59,10 @@ blogPostSchema.static('vectorSearch', function(embeddings: number[]) {
                 "_id": 1,
                 "title": 1,
                 "slug": 1,
+                "created": 1,
+                "description": 1,
+                "mime": 1,
+                "thumbnail": 1,
                 "score": {
                     "$meta": "vectorSearchScore"
                 },
